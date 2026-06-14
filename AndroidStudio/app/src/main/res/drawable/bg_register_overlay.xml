@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ① res/drawable/bg_register_overlay.xml
+     Overlay azul oscuro semi-transparente sobre la imagen del header -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#CC1A3CB8" />
+</shape>

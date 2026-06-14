@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_register_step_indicator.xml
+    Indicador de 2 pasos: Personal | Ubicación.
+    El paso activo tiene línea azul + texto azul.
+    El paso inactivo tiene línea gris + texto gris + ícono de pin.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface_white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/screen_margin"
+    android:paddingTop="@dimen/space_md"
+    android:paddingEnd="@dimen/screen_margin"
+    android:paddingBottom="@dimen/space_xs">
+
+    <!-- PASO 1: Personal (activo) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Ícono + línea -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Ícono persona (activo = azul) -->
+            <ImageView
+                android:id="@+id/iconStep1"
+                android:layout_width="@dimen/step_icon_size"
+                android:layout_height="@dimen/step_icon_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_person_outline"
+                android:tint="@color/blue_primary" />
+
+            <!-- Línea de progreso (activa = azul) -->
+            <View
+                android:id="@+id/lineStep1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/step_line_height"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/space_xs"
+                android:background="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <!-- Label paso 1 -->
+        <TextView
+            android:id="@+id/tvStep1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/step_personal"
+            android:textAppearance="@style/TextAppearance.CivicHero.StepActive" />
+
+    </LinearLayout>
+
+    <!-- PASO 2: Ubicación (inactivo) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Ícono + línea -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Línea antes del ícono (inactiva = gris) -->
+            <View
+                android:id="@+id/lineStep2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/step_line_height"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_xs"
+                android:background="@color/step_line_inactive" />
+
+            <!-- Ícono pin ubicación (inactivo = gris) -->
+            <ImageView
+                android:id="@+id/iconStep2"
+                android:layout_width="@dimen/step_icon_size"
+                android:layout_height="@dimen/step_icon_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_location_pin_outline"
+                android:tint="@color/step_line_inactive" />
+
+        </LinearLayout>
+
+        <!-- Label paso 2 -->
+        <TextView
+            android:id="@+id/tvStep2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/step_location"
+            android:textAppearance="@style/TextAppearance.CivicHero.StepInactive" />
+
+    </LinearLayout>
+
+</LinearLayout>

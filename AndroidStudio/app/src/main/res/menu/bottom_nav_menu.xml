@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/menu/bottom_nav_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_feed"
+        android:icon="@drawable/ic_star"
+        android:title="@string/nav_home" />
+
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/ic_add_circle"
+        android:iconTint="@color/black"
+        android:title="@string/nav_report" />
+
+    <item
+        android:id="@+id/nav_rewards"
+        android:icon="@drawable/ic_badge_pioneer"
+        android:title="@string/nav_rewards" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_account_circle"
+        android:title="@string/nav_profile" />
+
+</menu>

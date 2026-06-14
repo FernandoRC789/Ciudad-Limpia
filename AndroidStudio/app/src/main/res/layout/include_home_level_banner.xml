@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_home_level_banner.xml
+    Tarjeta azul de progreso al siguiente nivel.
+    Contiene: etiqueta "próximo nivel", título motivador, % progreso,
+    barra animada y botón CTA "Reportar Incidencia".
+-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/blue_primary"
+    app:cardCornerRadius="@dimen/card_radius_lg"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
+
+        <!-- Etiqueta "PRÓXIMO NIVEL: GUARDIÁN MUNICIPAL" -->
+        <TextView
+            android:id="@+id/tvNextLevelLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_xs"
+            android:text="@string/label_next_level"
+            android:textAppearance="@style/TextAppearance.CivicHero.LabelMuted"
+            android:textColor="@color/white_60" />
+
+        <!-- Fila: título motivador + porcentaje -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/space_md">
+
+            <TextView
+                android:id="@+id/tvMotivationalTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_almost_there"
+                android:textAppearance="@style/TextAppearance.CivicHero.HeroTitle"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvProgressPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:text="@string/progress_85"
+                android:textAppearance="@style/TextAppearance.CivicHero.HeroTitle"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <!-- Barra de progreso -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/progress_bar_height"
+            android:layout_marginBottom="@dimen/space_lg"
+            android:background="@drawable/bg_progress_track_dark">
+
+            <View
+                android:id="@+id/viewProgressFill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_progress_fill_green" />
+
+        </FrameLayout>
+
+        <!-- Botón CTA: Reportar Incidencia -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReportIncident"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_button_height"
+            android:text="@string/btn_report_incident"
+            android:textAppearance="@style/TextAppearance.CivicHero.ButtonCTA"
+            android:textColor="@color/green_dark"
+            app:backgroundTint="@color/green_cta"
+            app:cornerRadius="@dimen/button_radius"
+            app:icon="@drawable/ic_add_circle"
+            app:iconGravity="textStart"
+            app:iconSize="@dimen/icon_md"
+            app:iconTint="@color/green_dark" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

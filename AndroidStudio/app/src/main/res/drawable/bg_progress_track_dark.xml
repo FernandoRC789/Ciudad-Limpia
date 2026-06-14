@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ③ bg_progress_track_dark.xml  — pista de barra (sobre fondo azul) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/progress_track_dark" />
+    <corners android:radius="5dp" />
+</shape>
+

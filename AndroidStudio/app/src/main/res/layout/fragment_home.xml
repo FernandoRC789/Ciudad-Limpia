@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_home.xml
+    Pantalla principal de CivicHero.
+    Estructura: ScrollView > LinearLayout con secciones independientes.
+    Cada sección es un componente reutilizable y bien delimitado.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_screen">
+
+    <!-- ═══════════════════════════════
+         TOP APP BAR
+         ═══════════════════════════════ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_screen"
+        app:elevation="0dp">
+
+        <include layout="@layout/include_home_topbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ═══════════════════════════════
+         CONTENIDO PRINCIPAL (scrollable)
+         ═══════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_margin"
+            android:paddingEnd="@dimen/screen_margin"
+            android:paddingTop="@dimen/space_md"
+            android:paddingBottom="@dimen/space_xl">
+
+            <!-- ── 1. Banner de progreso de nivel ── -->
+            <include
+                android:id="@+id/sectionLevelProgress"
+                layout="@layout/include_home_level_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_lg" />
+
+            <!-- ── 2. Stats rápidos ── -->
+            <include
+                android:id="@+id/sectionStats"
+                layout="@layout/include_home_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_lg" />
+
+            <!-- ── 3. Mis Reportes Recientes ── -->
+            <include
+                android:id="@+id/sectionReports"
+                layout="@layout/include_home_recent_reports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_lg" />
+
+            <!-- ── 4. Impacto Comunitario ── -->
+            <include
+                android:id="@+id/sectionImpact"
+                layout="@layout/include_home_impact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

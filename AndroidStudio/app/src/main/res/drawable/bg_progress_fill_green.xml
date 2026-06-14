@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ④ bg_progress_fill_green.xml  — relleno verde de la barra -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/progress_fill_green" />
+    <corners android:radius="5dp" />
+</shape>

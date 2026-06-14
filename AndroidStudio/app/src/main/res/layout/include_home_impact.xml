@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_home_impact.xml
+    Tarjeta "Impacto Comunitario" con fondo azul claro,
+    ícono central, título, descripción y botón de compartir logros.
+-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/blue_impact_bg"
+    app:cardCornerRadius="@dimen/card_radius_lg"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding_lg">
+
+        <!-- Ícono central circular -->
+        <FrameLayout
+            android:layout_width="@dimen/impact_icon_container"
+            android:layout_height="@dimen/impact_icon_container"
+            android:layout_marginBottom="@dimen/space_md"
+            android:background="@drawable/bg_impact_icon_circle">
+
+            <ImageView
+                android:layout_width="@dimen/icon_lg"
+                android:layout_height="@dimen/icon_lg"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_group_outline"
+                app:tint="@color/blue_primary" />
+
+        </FrameLayout>
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_xs"
+            android:gravity="center"
+            android:text="@string/title_community_impact"
+            android:textAppearance="@style/TextAppearance.CivicHero.SectionTitle" />
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tvImpactDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_lg"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/desc_community_impact"
+            android:textAppearance="@style/TextAppearance.CivicHero.Body" />
+
+        <!-- Botón Compartir Logros -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnShareAchievements"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:paddingStart="@dimen/button_padding_h"
+            android:paddingEnd="@dimen/button_padding_h"
+            android:text="@string/btn_share_achievements"
+            android:textAppearance="@style/TextAppearance.CivicHero.ButtonSecondary"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue_primary"
+            app:cornerRadius="@dimen/button_radius" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

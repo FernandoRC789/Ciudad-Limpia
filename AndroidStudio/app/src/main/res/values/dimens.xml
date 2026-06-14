@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/values/dimens.xml
+    Todas las dimensiones en un solo lugar.
+    Cambiar un valor aquí actualiza toda la UI.
+-->
+<resources>
+
+    <!-- Espaciado base (escala de 4dp) -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">12dp</dimen>
+    <dimen name="space_lg">16dp</dimen>
+    <dimen name="space_xl">24dp</dimen>
+
+    <!-- Márgenes de pantalla -->
+    <dimen name="screen_margin">16dp</dimen>
+
+    <!-- Cards -->
+    <dimen name="card_radius_sm">8dp</dimen>
+    <dimen name="card_radius_md">12dp</dimen>
+    <dimen name="card_radius_lg">20dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding_lg">24dp</dimen>
+
+    <!-- Íconos -->
+    <dimen name="icon_xs">14dp</dimen>
+    <dimen name="icon_sm">16dp</dimen>
+    <dimen name="icon_md">24dp</dimen>
+    <dimen name="icon_lg">32dp</dimen>
+    <dimen name="icon_button_size">40dp</dimen>
+
+    <!-- Avatar (topbar) -->
+    <dimen name="avatar_size">44dp</dimen>
+    <dimen name="avatar_radius">22dp</dimen>
+
+    <!-- TopBar -->
+    <dimen name="topbar_height">60dp</dimen>
+
+    <!-- Barra de navegación inferior -->
+    <dimen name="bottom_nav_height">64dp</dimen>
+
+    <!-- Barra de progreso -->
+    <dimen name="progress_bar_height">10dp</dimen>
+
+    <!-- Botones -->
+    <dimen name="button_height">44dp</dimen>
+    <dimen name="cta_button_height">52dp</dimen>
+    <dimen name="button_radius">12dp</dimen>
+    <dimen name="button_padding_h">24dp</dimen>
+
+    <!-- Chips -->
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_padding_h">12dp</dimen>
+    <dimen name="chip_secondary_height">24dp</dimen>
+
+    <!-- Badge nivel (topbar) -->
+    <dimen name="level_badge_height">18dp</dimen>
+    <dimen name="badge_padding_h">8dp</dimen>
+    <dimen name="badge_padding_v">4dp</dimen>
+
+    <!-- Thumbnail reportes -->
+    <dimen name="report_thumb_size">72dp</dimen>
+
+    <!-- Impacto comunitario -->
+    <dimen name="impact_icon_container">56dp</dimen>
+
+    <dimen name="register_header_height">200dp</dimen>
+    <dimen name="field_height">52dp</dimen>
+    <dimen name="field_spacing">12dp</dimen>
+    <dimen name="step_icon_size">28dp</dimen>
+    <dimen name="step_line_height">2dp</dimen>
+
+</resources>

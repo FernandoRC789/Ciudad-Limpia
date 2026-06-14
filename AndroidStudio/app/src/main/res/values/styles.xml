@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- =========================================================
+     res/values/styles.xml  (fragmento — agregar dentro de <resources>)
+     ========================================================= -->
+<resources>
+<style name="Widget.CivicGuard.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+    <item name="android:background">@color/surface_white</item>
+    <item name="itemIconTint">@color/nav_item_color</item>
+    <item name="itemTextColor">@color/nav_item_color</item>
+    <item name="elevation">8dp</item>
+</style>
+
+    <!-- ══════════════════════════════════════
+     TEXT APPEARANCES
+     ══════════════════════════════════════ -->
+
+    <!-- Título grande de topbar "CivicHero" -->
+    <style name="TextAppearance.CivicHero.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Subtítulo "Héroe de la Ciudad" -->
+    <style name="TextAppearance.CivicHero.Subtitle" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Puntos en chip del header -->
+    <style name="TextAppearance.CivicHero.Points" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Badge LVL en avatar -->
+    <style name="TextAppearance.CivicHero.Badge" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Etiqueta muted (en banner azul) -->
+    <style name="TextAppearance.CivicHero.LabelMuted" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <!-- Título heroico del banner "¡Casi lo logras!" -->
+    <style name="TextAppearance.CivicHero.HeroTitle" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Texto del botón CTA verde -->
+    <style name="TextAppearance.CivicHero.ButtonCTA" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- Texto del botón secundario azul -->
+    <style name="TextAppearance.CivicHero.ButtonSecondary" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- Etiqueta de stat card "Resueltos" -->
+    <style name="TextAppearance.CivicHero.StatLabel" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Valor numérico de stat card "12" -->
+    <style name="TextAppearance.CivicHero.StatValue" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Título de sección "Mis Reportes Recientes" -->
+    <style name="TextAppearance.CivicHero.SectionTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Link "Ver todo" -->
+    <style name="TextAppearance.CivicHero.Link" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/blue_primary</item>
+    </style>
+
+    <!-- Título de item reporte -->
+    <style name="TextAppearance.CivicHero.ReportTitle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Meta del reporte "Hace 2 horas · San Isidro" -->
+    <style name="TextAppearance.CivicHero.ReportMeta" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Badge de estado "EN PROCESO" / "RESUELTO" -->
+    <style name="TextAppearance.CivicHero.StatusBadge" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <!-- Label del chip secundario (apoyos / pts) -->
+    <style name="TextAppearance.CivicHero.ChipLabel" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/chip_secondary_text</item>
+    </style>
+
+    <!-- Cuerpo de texto (descripción impacto comunitario) -->
+    <style name="TextAppearance.CivicHero.Body" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- ================================================================
+     ARCHIVO 4: res/values/styles.xml  (Widget + TextAppearance)
+     ================================================================ -->
+    <!--
+    WIDGET CAMPO DE TEXTO:-->
+    <style name="Widget.CivicHero.TextInputLayout"
+           parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/field_border</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="errorTextColor">@color/error_red</item>
+    </style>
+    </resources>

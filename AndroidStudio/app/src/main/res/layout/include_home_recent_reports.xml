@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_home_recent_reports.xml
+    Sección "Mis Reportes Recientes" con encabezado + lista de items.
+    Cada item de reporte es un componente item_report_card.xml
+    inflado por RecentReportsAdapter en el RecyclerView.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Encabezado de sección -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/space_md">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/section_recent_reports"
+            android:textAppearance="@style/TextAppearance.CivicHero.SectionTitle" />
+
+        <TextView
+            android:id="@+id/tvSeeAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/action_see_all"
+            android:textAppearance="@style/TextAppearance.CivicHero.Link" />
+
+    </LinearLayout>
+
+    <!--
+        RecyclerView con MATCH_PARENT en altura y nestedScrollingEnabled=false
+        para que el NestedScrollView padre controle el scroll.
+        El Adapter infla item_report_card.xml por cada reporte.
+    -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecentReports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never" />
+
+</LinearLayout>

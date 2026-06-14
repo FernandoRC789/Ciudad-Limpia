@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ⑤ res/color/nav_item_color.xml  (selector de color para la barra inferior) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#1565C0" android:state_checked="true" />
+    <item android:color="#78909C" />
+</selector>

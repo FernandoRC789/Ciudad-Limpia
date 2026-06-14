@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_register_form_personal.xml
+    Formulario de datos personales — Paso 1.
+
+    CAMPOS (alineados con la API + campos nuevos sugeridos):
+    ─────────────────────────────────────────────────────
+    API BASE:
+      • dni          → TextInputLayout (8 dígitos, solo números)
+      • nombre       → TextInputLayout (texto libre)
+      • apellido     → TextInputLayout (texto libre)
+      • email        → TextInputLayout (email)
+      • telefono     → TextInputLayout (phone, prefijo país)
+      • password     → TextInputLayout (password, toggle visibilidad)
+
+    CAMPOS NUEVOS SUGERIDOS (necesarios para la app):
+      • fecha_nacimiento → TextInputLayout + DatePicker (para validar mayoría de edad)
+      • genero           → AutoCompleteTextView / Spinner (M/F/Prefiero no decirlo)
+      • foto_perfil      → Vista de selección de foto (opcional en registro)
+    ─────────────────────────────────────────────────────
+    Los campos de Paso 2 (distrito, dirección, referencia,
+    latitud, longitud) van en include_register_form_location.xml
+-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/surface_white"
+    app:cardCornerRadius="@dimen/card_radius_lg"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
+
+        <!-- ── DNI ────────────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDni"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_dni"
+            app:startIconDrawable="@drawable/ic_id_card_outline"
+            app:startIconTint="@color/icon_field"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDni"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── NOMBRE ──────────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombre"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_nombre"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:capitalize="words"
+                android:inputType="textPersonName"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── APELLIDO ────────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilApellido"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_apellido"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellido"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:capitalize="words"
+                android:inputType="textPersonName"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── EMAIL ──────────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_email"
+            app:startIconDrawable="@drawable/ic_mail_outline"
+            app:startIconTint="@color/icon_field"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:inputType="textEmailAddress"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── TELÉFONO ───────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTelefono"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_telefono"
+            app:startIconDrawable="@drawable/ic_phone_outline"
+            app:startIconTint="@color/icon_field"
+            app:prefixText="@string/phone_prefix"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:inputType="phone"
+                android:maxLength="9"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── FECHA DE NACIMIENTO (campo nuevo) ──────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFechaNacimiento"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_fecha_nacimiento"
+            app:startIconDrawable="@drawable/ic_calendar_outline"
+            app:startIconTint="@color/icon_field"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_calendar_outline"
+            app:endIconTint="@color/icon_field"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:focusable="false"
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── GÉNERO (campo nuevo) ───────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilGenero"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_genero"
+            app:errorEnabled="true">
+
+            <AutoCompleteTextView
+                android:id="@+id/actvGenero"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:focusable="false"
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── CONTRASEÑA ─────────────────────────────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/field_spacing"
+            android:hint="@string/hint_password"
+            app:startIconDrawable="@drawable/ic_lock_outline"
+            app:startIconTint="@color/icon_field"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:inputType="textPassword"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ── CONFIRMAR CONTRASEÑA (campo nuevo) ────────────── -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmPassword"
+            style="@style/Widget.CivicHero.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_confirm_password"
+            app:startIconDrawable="@drawable/ic_lock_outline"
+            app:startIconTint="@color/icon_field"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/field_height"
+                android:inputType="textPassword"
+                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

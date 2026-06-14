@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    include_home_topbar.xml
+    Barra superior: avatar + nombre + nivel | puntos | notificaciones.
+    Usada vía <include> en fragment_home.xml.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/topbar_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/screen_margin"
+    android:paddingEnd="@dimen/screen_margin">
+
+    <!-- Avatar circular con badge LVL -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            app:cardCornerRadius="@dimen/avatar_radius"
+            app:cardElevation="0dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/cd_user_avatar"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_account_circle" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Badge LVL 24 sobre el avatar -->
+        <TextView
+            android:id="@+id/tvLevelBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/level_badge_height"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/bg_level_badge"
+            android:gravity="center"
+            android:paddingStart="@dimen/badge_padding_h"
+            android:paddingEnd="@dimen/badge_padding_h"
+            android:text="@string/label_lvl_24"
+            android:textAppearance="@style/TextAppearance.CivicHero.Badge"
+            android:textColor="@color/white" />
+
+    </FrameLayout>
+
+    <!-- Nombre + subtítulo -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_sm"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_display_name"
+            android:textAppearance="@style/TextAppearance.CivicHero.Title" />
+
+        <TextView
+            android:id="@+id/tvUserRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rank_hero_ciudad"
+            android:textAppearance="@style/TextAppearance.CivicHero.Subtitle" />
+
+    </LinearLayout>
+
+    <!-- Chip de puntos -->
+    <LinearLayout
+        android:id="@+id/chipPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/chip_height"
+        android:layout_marginEnd="@dimen/space_sm"
+        android:background="@drawable/bg_chip_points"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/chip_padding_h"
+        android:paddingEnd="@dimen/chip_padding_h">
+
+        <ImageView
+            android:layout_width="@dimen/icon_sm"
+            android:layout_height="@dimen/icon_sm"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_trophy"
+            android:tint="@color/amber_600" />
+
+        <TextView
+            android:id="@+id/tvPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_xs"
+            android:text="@string/points_sample"
+            android:textAppearance="@style/TextAppearance.CivicHero.Points" />
+
+    </LinearLayout>
+
+    <!-- Ícono de notificaciones -->
+    <ImageButton
+        android:id="@+id/btnNotifications"
+        android:layout_width="@dimen/icon_button_size"
+        android:layout_height="@dimen/icon_button_size"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/cd_notifications"
+        android:src="@drawable/ic_notifications_outline"
+        android:tint="@color/text_primary" />
+
+</LinearLayout>

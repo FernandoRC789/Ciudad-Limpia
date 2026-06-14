@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ⑤ res/drawable/bg_camera_button.xml
+     Botón circular azul para el ícono de cámara sobre el avatar -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#1565C0" />
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF" />
+</shape>
+
+
+    <!-- ⑥ res/drawable/ic_star_filled.xml  (Vector Asset — usar Material ic_star) -->
+    <!-- Agregar desde Android Studio: File → New → Vector Asset → buscar "star" -->

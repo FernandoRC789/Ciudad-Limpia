@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ⑦ bg_chip_secondary.xml  — chip ámbar (apoyos / pts ganados en items) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/chip_secondary_bg" />
+    <corners android:radius="12dp" />
+</shape>
