@@ -1,15 +1,17 @@
-package com.nickrodriguez.ciudadlimpia
+package com.nickrodriguez.ciudadlimpia.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.nickrodriguez.ciudadlimpia.MainActivity
+import com.nickrodriguez.ciudadlimpia.R
 import com.nickrodriguez.ciudadlimpia.model.AuthRequest
 import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
-import com.nickrodriguez.ciudadlimpia.ui.home.HomeFragment
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -17,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etEmail: TextInputEditText
     private lateinit var etPassword: TextInputEditText
     private lateinit var btnLogin: MaterialButton
+    private lateinit var tvRegister: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
+        tvRegister = findViewById(R.id.tvRegister)
     }
 
     private fun setupListeners() {
@@ -56,6 +60,16 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login(email, password)
+        }
+
+        tvRegister.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    RegisterUsuarioActivity::class.java
+                )
+            )
         }
     }
 

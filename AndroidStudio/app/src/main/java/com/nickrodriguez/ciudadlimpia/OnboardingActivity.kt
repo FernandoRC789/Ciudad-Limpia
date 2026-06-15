@@ -14,6 +14,7 @@ import com.google.android.material.button.MaterialButton
 import com.nickrodriguez.ciudadlimpia.adapter.OnboardingAdapter
 import com.nickrodriguez.ciudadlimpia.model.OnboardingItem
 import androidx.core.view.WindowCompat
+import com.nickrodriguez.ciudadlimpia.ui.auth.LoginActivity
 
 class OnboardingActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2

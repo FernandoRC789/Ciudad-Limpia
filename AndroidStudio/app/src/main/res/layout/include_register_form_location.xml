@@ -24,14 +24,14 @@
     app:cardCornerRadius="@dimen/card_radius_lg"
     app:cardElevation="@dimen/card_elevation">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/card_padding">
+        android:padding="@dimen/card_padding">-->
 
-        <!-- ── Opción GPS ──────────────────────────────────────── -->
-        <LinearLayout
+         <!--── Opción GPS ──────────────────────────────────────── -->
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -75,10 +75,10 @@
                 app:thumbTint="@color/switch_thumb_selector"
                 app:trackTint="@color/switch_track_selector" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <!-- ── DEPARTAMENTO ────────────────────────────────────── -->
-        <com.google.android.material.textfield.TextInputLayout
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDepartamento"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
@@ -96,9 +96,9 @@
                 android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+-->
         <!-- ── PROVINCIA ───────────────────────────────────────── -->
-        <com.google.android.material.textfield.TextInputLayout
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilProvincia"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
@@ -116,9 +116,9 @@
                 android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+-->
         <!-- ── DISTRITO ────────────────────────────────────────── -->
-        <com.google.android.material.textfield.TextInputLayout
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDistrito"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
@@ -138,51 +138,51 @@
                 android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+-->
         <!-- ── DIRECCIÓN ───────────────────────────────────────── -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilDireccion"
-            style="@style/Widget.CivicHero.TextInputLayout"
+    <!--<com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDireccion"
+        style="@style/Widget.CivicHero.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_spacing"
+        android:hint="@string/hint_direccion"
+        app:startIconDrawable="@drawable/ic_home_outline"
+        app:startIconTint="@color/icon_field"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDireccion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/field_spacing"
-            android:hint="@string/hint_direccion"
-            app:startIconDrawable="@drawable/ic_home_outline"
-            app:startIconTint="@color/icon_field"
-            app:errorEnabled="true">
+            android:layout_height="@dimen/field_height"
+            android:capitalize="sentences"
+            android:inputType="textPostalAddress"
+            android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/field_height"
-                android:capitalize="sentences"
-                android:inputType="textPostalAddress"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+    </com.google.android.material.textfield.TextInputLayout>-->
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <!-- ── REFERENCIA (opcional) ───────────────────────────── -->
+    <!--<com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilReferencia"
+        style="@style/Widget.CivicHero.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_referencia"
+        app:helperText="@string/helper_referencia"
+        app:counterEnabled="true"
+        app:counterMaxLength="80">
 
-        <!-- ── REFERENCIA (opcional) ───────────────────────────── -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilReferencia"
-            style="@style/Widget.CivicHero.TextInputLayout"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etReferencia"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_referencia"
-            app:helperText="@string/helper_referencia"
-            app:counterEnabled="true"
-            app:counterMaxLength="80">
+            android:layout_height="@dimen/field_height"
+            android:capitalize="sentences"
+            android:inputType="textCapSentences"
+            android:maxLength="80"
+            android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etReferencia"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/field_height"
-                android:capitalize="sentences"
-                android:inputType="textCapSentences"
-                android:maxLength="80"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
+</LinearLayout>-->
 
 </androidx.cardview.widget.CardView>

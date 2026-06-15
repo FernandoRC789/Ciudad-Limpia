@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CiudadLimpia">
         <activity
-            android:name=".RegisterUsuarioActivity"
+            android:name=".ui.auth.RegisterUsuarioActivity"
             android:exported="false" />
         <activity
             android:name=".OnboardingActivity"
@@ -40,7 +40,7 @@
             android:name=".fragment_profile_empty_activity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

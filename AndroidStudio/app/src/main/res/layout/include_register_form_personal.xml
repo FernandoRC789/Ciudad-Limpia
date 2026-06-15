@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_dni"
-            app:startIconDrawable="@drawable/ic_id_card_outline"
+            app:startIconDrawable="@drawable/ic_camera"
             app:startIconTint="@color/icon_field"
             app:errorEnabled="true">
 
@@ -54,7 +54,7 @@
                 android:layout_height="@dimen/field_height"
                 android:inputType="number"
                 android:maxLength="8"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +74,7 @@
                 android:layout_height="@dimen/field_height"
                 android:capitalize="words"
                 android:inputType="textPersonName"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +94,7 @@
                 android:layout_height="@dimen/field_height"
                 android:capitalize="words"
                 android:inputType="textPersonName"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_email"
-            app:startIconDrawable="@drawable/ic_mail_outline"
+            app:startIconDrawable="@drawable/ic_email"
             app:startIconTint="@color/icon_field"
             app:errorEnabled="true">
 
@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
                 android:inputType="textEmailAddress"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_telefono"
-            app:startIconDrawable="@drawable/ic_phone_outline"
+            app:startIconDrawable="@drawable/ic_image_placeholder"
             app:startIconTint="@color/icon_field"
             app:prefixText="@string/phone_prefix"
             app:errorEnabled="true">
@@ -138,11 +138,11 @@
                 android:layout_height="@dimen/field_height"
                 android:inputType="phone"
                 android:maxLength="9"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- ── FECHA DE NACIMIENTO (campo nuevo) ──────────────── -->
+        <!-- ── FECHA DE NACIMIENTO (campo nuevo) ────────────────
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilFechaNacimiento"
             style="@style/Widget.CivicHero.TextInputLayout"
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_fecha_nacimiento"
-            app:startIconDrawable="@drawable/ic_calendar_outline"
+            app:startIconDrawable="@drawable/ic_c"
             app:startIconTint="@color/icon_field"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_calendar_outline"
@@ -165,9 +165,9 @@
                 android:inputType="none"
                 android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <!-- ── GÉNERO (campo nuevo) ───────────────────────────── -->
+        <!-- ── GÉNERO (campo nuevo) ─────────────────────────────
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilGenero"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -185,7 +185,7 @@
                 android:inputType="none"
                 android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
         <!-- ── CONTRASEÑA ─────────────────────────────────────── -->
         <com.google.android.material.textfield.TextInputLayout
@@ -195,7 +195,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_password"
-            app:startIconDrawable="@drawable/ic_lock_outline"
+            app:startIconDrawable="@drawable/ic_star"
             app:startIconTint="@color/icon_field"
             app:endIconMode="password_toggle"
             app:errorEnabled="true">
@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
                 android:inputType="textPassword"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,7 +216,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_confirm_password"
-            app:startIconDrawable="@drawable/ic_lock_outline"
+            app:startIconDrawable="@drawable/ic_camera"
             app:startIconTint="@color/icon_field"
             app:endIconMode="password_toggle"
             app:errorEnabled="true">
@@ -226,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
                 android:inputType="textPassword"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
