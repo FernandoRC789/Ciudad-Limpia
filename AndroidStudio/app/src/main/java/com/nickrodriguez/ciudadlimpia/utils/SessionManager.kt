@@ -29,4 +29,6 @@ class SessionManager(
     fun logout() {
         prefs.edit().clear().apply()
     }
+
+    companion object
 }

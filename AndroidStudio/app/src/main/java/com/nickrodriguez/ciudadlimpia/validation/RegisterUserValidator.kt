@@ -1,7 +1,5 @@
 package com.nickrodriguez.ciudadlimpia.validation
 
-import java.util.Calendar
-
 object RegisterUserValidator {
 
     private val EMAIL_REGEX = Regex("^[A-Za-z0-9+_.-]+@(.+)$")
@@ -11,7 +9,7 @@ object RegisterUserValidator {
     private const val PHONE_LENGTH = 9
 
     fun validateStep1(
-        dni: String, nombre: String, apellido: String,
+        dni: String, nombre: String, apellido: String, direccion: String, distrito: String,
         email: String, telefono: String, password: String, confirmPassword: String
     ): RegisterUserValidationErrors {
         return RegisterUserValidationErrors(
@@ -42,12 +40,14 @@ object RegisterUserValidator {
                 !telefono.all { it.isDigit() }      -> "Solo números"
                 else                                -> null
             },
-            /*fechaNacimiento = when {
-                fechaNacimiento.isBlank() -> "La fecha de nacimiento es obligatoria"
-                !isOldEnough(fechaNacimiento) -> "Debes tener al menos $MIN_AGE años"
-                else -> null
+            direccion = when {
+                direccion.isBlank() -> "Su dirección es obligatorio"
+                else             -> null
             },
-            genero = if (genero.isBlank()) "Selecciona una opción" else null,*/
+            distrito = when {
+                distrito.isBlank() -> "El distrito es obligatorio"
+                else               -> null
+            },
             password = when {
                 password.isBlank()                      -> "La contraseña es obligatoria"
                 password.length < MIN_PASSWORD_LENGTH   -> "Mínimo $MIN_PASSWORD_LENGTH caracteres"
@@ -61,31 +61,4 @@ object RegisterUserValidator {
             }
         )
     }
-
-    /*fun validateStep2(
-        distrito: String, direccion: String
-    ): RegisterUserValidationErrors {
-        return RegisterUserValidationErrors(
-            distrito  = if (distrito.isBlank()) "Selecciona tu distrito" else null,
-            direccion = if (direccion.isBlank()) "La dirección es obligatoria" else null
-        )
-    }*/
-
-    /** Verifica que el usuario tenga al menos MIN_AGE años. */
-    private fun isOldEnough(dateStr: String): Boolean {
-        return try {
-            val parts = dateStr.split("-")
-            val birthYear  = parts[0].toInt()
-            val birthMonth = parts[1].toInt()
-            val birthDay   = parts[2].toInt()
-            val now = Calendar.getInstance()
-            val age = now.get(Calendar.YEAR) - birthYear -
-                    if (now.get(Calendar.MONTH) + 1 < birthMonth ||
-                        (now.get(Calendar.MONTH) + 1 == birthMonth && now.get(Calendar.DAY_OF_MONTH) < birthDay)
-                    ) 1 else 0
-            age >= MIN_AGE
-        } catch (e: Exception) { false }
-    }
-
-
 }

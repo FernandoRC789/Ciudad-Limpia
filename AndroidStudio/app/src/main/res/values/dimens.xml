@@ -21,7 +21,7 @@
     <dimen name="card_radius_md">12dp</dimen>
     <dimen name="card_radius_lg">20dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
-    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding">15dp</dimen>
     <dimen name="card_padding_lg">24dp</dimen>
 
     <!-- Íconos -->
@@ -66,7 +66,7 @@
     <!-- Impacto comunitario -->
     <dimen name="impact_icon_container">56dp</dimen>
 
-    <dimen name="register_header_height">200dp</dimen>
+    <dimen name="register_header_height">160dp</dimen>
     <dimen name="field_height">52dp</dimen>
     <dimen name="field_spacing">12dp</dimen>
     <dimen name="step_icon_size">28dp</dimen>

@@ -60,14 +60,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register_title"
-                    android:textAppearance="@style/MaterialAlertDialog.MaterialComponents.Title.Text" />
+                    android:textSize="25sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_xs"
                     android:text="@string/register_subtitle"
-                    android:textAppearance="@style/TextAppearance.CivicHero.Subtitle" />
+                    android:textColor="@color/white"
+                    android:textSize="14dp"/>
 
             </LinearLayout>
 
@@ -88,14 +91,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- ── Step Indicator ── -->
-                <include
-                    layout="@layout/include_register_step_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
                 <!-- ── Card del formulario ── -->
                 <include
+                    android:id="@+id/include_register_form_personal"
                     layout="@layout/include_register_form_personal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,9 +101,9 @@
                     android:layout_marginTop="@dimen/space_lg"
                     android:layout_marginEnd="@dimen/screen_margin" />
 
-                <!-- ── Botón Siguiente ── -->
+                <!-- ── Botón Siguiente parte 2 ── -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnNext"
+                    android:id="@+id/btnNextRegister"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/cta_button_height"
                     android:layout_marginStart="@dimen/screen_margin"

@@ -6,14 +6,11 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/reportes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReporteResource {
-
     private final ReporteService reporteService;
     private final JwtService jwtService;
 

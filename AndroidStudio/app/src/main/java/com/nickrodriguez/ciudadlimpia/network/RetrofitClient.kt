@@ -8,13 +8,11 @@ object RetrofitClient {
 
     /*private const val BASE_URL =
         "http://10.0.2.2:8080/"*/
-
     //Si usarás tu celular físico:
 
     private const val BASE_URL =
         //"http://10.228.208.191:8080/"
-    "http://192.168.1.6:8080/"
-
+    "http://192.168.1.5:8080/"
 
     private val retrofit by lazy {
 
@@ -29,4 +27,6 @@ object RetrofitClient {
     val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
+
+
 }

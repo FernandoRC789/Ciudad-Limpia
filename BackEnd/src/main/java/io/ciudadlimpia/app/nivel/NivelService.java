@@ -69,5 +69,4 @@ public class NivelService {
         nivel.setIcono(nivelDTO.getIcono());
         return nivel;
     }
-
 }

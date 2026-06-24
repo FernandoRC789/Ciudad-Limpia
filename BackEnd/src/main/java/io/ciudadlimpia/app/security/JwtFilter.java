@@ -32,7 +32,10 @@ protected void doFilterInternal(
         @NonNull FilterChain filterChain
 ) throws ServletException, IOException {
 
-    final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
+
+        System.out.println("Metodo: " + request.getMethod());
+        System.out.println("Authorization: " + authHeader);
 
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
         filterChain.doFilter(request, response);
@@ -43,9 +46,16 @@ protected void doFilterInternal(
     
     try {
         final String email = jwtService.extractUsername(jwt);
+        System.out.println("Email extraido: " + email);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            System.out.println("Usuario encontrado");
+
+            boolean valido =
+                    jwtService.isTokenValid(jwt, userDetails);
+
+            System.out.println("Token valido: " + valido);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
@@ -54,10 +64,13 @@ protected void doFilterInternal(
                         );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Usuario autenticado");
             }
         }
-    } catch (Exception e) {
-        // Token inválido o malformado — simplemente no autenticamos
+    }catch (Exception e) {
+        System.out.println("ERROR JWT:");
+        e.printStackTrace();
+
         SecurityContextHolder.clearContext();
     }
 

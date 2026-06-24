@@ -25,5 +25,4 @@ public class NivelDTO {
 
     @Size(max = 100)
     private String icono;
-
 }

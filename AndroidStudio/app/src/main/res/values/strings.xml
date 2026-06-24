@@ -23,7 +23,7 @@
     <string name="cd_notifications">Notificaciones</string>
 
     <!-- Banner de nivel -->
-    <string name="label_next_level">PRÓXIMO NIVEL: GUARDIÁN MUNICIPAL</string>
+    <string name="label_next_level">PRÓXIMO NIVEL:</string>
     <string name="title_almost_there">¡Casi lo logras!</string>
     <string name="progress_85">85%</string>
     <string name="btn_report_incident">Reportar Incidencia</string>
@@ -65,7 +65,7 @@
     <string name="register_subtitle">Únete a la red de ciudadanos activos.</string>
     <string name="step_personal">Personal</string>
     <string name="step_location">Ubicación</string>
-    <string name="hint_dni">DNI (ID Number)</string>
+    <string name="hint_dni">Documento de Identidad</string>
     <string name="hint_nombre">Nombre</string>
     <string name="hint_apellido">Apellido</string>
     <string name="hint_email">Email</string>
@@ -77,7 +77,7 @@
     <string name="hint_confirm_password">Confirmar contraseña</string>
     <string name="hint_departamento">Departamento</string>
     <string name="hint_provincia">Provincia</string>
-    <string name="hint_distrito">Distrito *</string>
+    <string name="hint_distrito">Distrito</string>
     <string name="hint_direccion">Dirección</string>
     <string name="hint_referencia">Referencia (opcional)</string>
     <string name="helper_referencia">Ej: cerca al parque, frente al colegio</string>

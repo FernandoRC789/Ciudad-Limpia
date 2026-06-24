@@ -1,11 +1,17 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CiudadLimpia" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@android:color/black</item>
+<resources>
 
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style
+        name="Base.Theme.CiudadLimpia"
+        parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="android:statusBarColor">
+            @android:color/black
+        </item>
+
     </style>
 
-    <style name="Theme.CiudadLimpia" parent="Base.Theme.CiudadLimpia" />
+    <style
+        name="Theme.CiudadLimpia"
+        parent="Base.Theme.CiudadLimpia"/>
+
 </resources>

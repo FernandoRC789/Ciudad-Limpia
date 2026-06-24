@@ -38,7 +38,7 @@ android:fillViewport="true"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Civic Guard"
+            android:text="Ciudad Limpia"
             android:textColor="#1565C0"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -94,10 +94,24 @@ android:fillViewport="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_account_circle" />
 
+                <ImageButton
+                    android:id="@+id/btnEditarFoto"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_edit_photo"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_edit"
+                    android:contentDescription="Editar foto"
+                    app:tint="#FFFFFF"/>
+
             </androidx.cardview.widget.CardView>
 
             <!-- Badge Level -->
             <TextView
+                android:id="@+id/tvLevelBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -105,7 +119,6 @@ android:fillViewport="true"
                 android:gravity="center"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:text="Level 12"
                 android:textColor="#FFFFFF"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -114,22 +127,24 @@ android:fillViewport="true"
 
         <!-- Nombre -->
         <TextView
+            android:id="@+id/tvNombreUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Juan Pérez"
+            android:text=""
             android:textColor="#1A1A2E"
             android:textSize="22sp"
             android:textStyle="bold" />
 
         <!-- Título / Rango -->
         <TextView
+            android:id="@+id/tvNivelUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:fontFamily="sans-serif"
-            android:text="District Hero"
+            android:text=""
             android:textColor="#78909C"
             android:textSize="14sp"
             android:textStyle="italic" />
@@ -163,9 +178,10 @@ android:fillViewport="true"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvReportesEnviados"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24"
+                    android:text=""
                     android:textColor="#1565C0"
                     android:textSize="28sp"
                     android:textStyle="bold" />
@@ -197,9 +213,10 @@ android:fillViewport="true"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvReportesEvaluados"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="18"
+                    android:text=""
                     android:textColor="#2E7D32"
                     android:textSize="28sp"
                     android:textStyle="bold" />
@@ -231,9 +248,10 @@ android:fillViewport="true"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvPuntosTotales"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="850"
+                    android:text=""
                     android:textColor="#F57F17"
                     android:textSize="28sp"
                     android:textStyle="bold" />

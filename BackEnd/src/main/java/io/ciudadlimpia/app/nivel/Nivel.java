@@ -37,5 +37,4 @@ public class Nivel {
 
     @OneToMany(mappedBy = "nivel")
     private Set<GamingProfile> nivelGamingProfiles = new HashSet<>();
-
 }

@@ -8,73 +8,98 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.nickrodriguez.ciudadlimpia.R
-import com.nickrodriguez.ciudadlimpia.model.RecentReport
-import com.nickrodriguez.ciudadlimpia.model.ReportStatus
+import com.nickrodriguez.ciudadlimpia.adapter.reporte.MisReportesAdapter
 import com.nickrodriguez.ciudadlimpia.ui.reporte.ReporteFragment
-import com.nickrodriguez.ciudadlimpia.adapter.reporte.RecentReportsAdapter
-// Alias para evitar import ambiguo
-//private typealias ViewGroup = android.view.ViewGroup
-
-// ─────────────────────────────────────────────────────────────────────────────
-// FRAGMENT
-// ─────────────────────────────────────────────────────────────────────────────
+import com.nickrodriguez.ciudadlimpia.model.PerfilResponse
+import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
+import kotlinx.coroutines.launch
+import android.net.Uri
+import android.widget.ImageView
+import java.io.File
 
 class HomeFragment : Fragment() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MisReportesAdapter
 
-    // En producción, estos datos vendrían de un ViewModel / repositorio
-    private val userPoints     = 2450
-    private val progressPercent = 0.85f   // 85%
-    private val statResueltos  = 12
-    private val statComunidad  = 48
-
-    private val sampleReports = listOf(
-        RecentReport(
-            id = "1",
-            title = "Basura en Av. Central",
-            meta = "Hace 2 horas · San Isidro",
-            status = ReportStatus.IN_PROGRESS,
-            likesCount = 14,
-            imageResId = R.drawable.ic_image_placeholder
-        ),
-        RecentReport(
-            id            = "2",
-            title         = "Luz apagada",
-            meta          = "Ayer · Plaza Mayor",
-            status        = ReportStatus.RESOLVED,
-            pointsEarned  = 50,
-            imageResId    = R.drawable.ic_image_placeholder
-        )
-    )
-
+    private var progressPercent = 0f
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_home, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
         super.onViewCreated(view, savedInstanceState)
-        setupStats(view)
-        setupProgressBar(view)
-        setupRecentReports(view)
-        setupClickListeners(view)
+
+        recyclerView = view.findViewById(R.id.rvRecentReports)
+
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext())
+
+        adapter = MisReportesAdapter(
+            mutableListOf()
+        )
+
+        recyclerView.adapter = adapter
+
+        cargarPerfil(view)
+        cargarReportes()
     }
+    private fun cargarReportes() {
 
-    // ── Stats ────────────────────────────────────────────────────────────────
+        lifecycleScope.launch {
 
-    private fun setupStats(view: View) {
-        view.findViewById<TextView>(R.id.tvStatResueltos)?.text  = statResueltos.toString()
-        view.findViewById<TextView>(R.id.tvStatComunidad)?.text  = statComunidad.toString()
-        view.findViewById<TextView>(R.id.tvPoints)?.text         =
-            getString(R.string.points_sample)  // reemplazar con userPoints.formatPoints()
+            try {
+                val prefs = requireActivity()
+                    .getSharedPreferences(
+                        "ciudad_limpia",
+                        android.content.Context.MODE_PRIVATE
+                    )
+
+                val token =
+                    prefs.getString(
+                        "jwt_token",
+                        ""
+                    ) ?: ""
+
+                val response =
+                    RetrofitClient.apiService
+                        .getMisReportes(
+                            "Bearer $token"
+                        )
+
+                if(response.isSuccessful){
+
+                    val reportes =
+                        response.body() ?: emptyList()
+
+                    adapter.actualizarLista(
+                        reportes
+                    )
+                }
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+                Toast.makeText(
+                    requireContext(),
+                    e.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     // ── Barra de progreso animada ─────────────────────────────────────────────
-
     private fun setupProgressBar(view: View) {
         val fillView = view.findViewById<View>(R.id.viewProgressFill) ?: return
         fillView.post {
@@ -93,21 +118,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    // ── RecyclerView de reportes ──────────────────────────────────────────────
-
-    private fun setupRecentReports(view: View) {
-        view.findViewById<RecyclerView>(R.id.rvRecentReports)?.apply {
-            layoutManager       = LinearLayoutManager(requireContext())
-            adapter             = RecentReportsAdapter(sampleReports) { report ->
-                navigateToReportDetail(report.id)
-            }
-            isNestedScrollingEnabled = false
-        }
-    }
-
     // ── Click listeners ───────────────────────────────────────────────────────
-
     private fun setupClickListeners(view: View) {
         view.findViewById<MaterialButton>(R.id.btnReportIncident)
             ?.setOnClickListener {
@@ -124,16 +135,13 @@ class HomeFragment : Fragment() {
 
         view.findViewById<MaterialButton>(R.id.btnShareAchievements)
             ?.setOnClickListener { shareAchievements() }
-
         view.findViewById<TextView>(R.id.tvSeeAll)
             ?.setOnClickListener { navigateToAllReports() }
-
         view.findViewById<android.widget.ImageButton>(R.id.btnNotifications)
             ?.setOnClickListener { navigateToNotifications() }
     }
 
     // ── Navegación ────────────────────────────────────────────────────────────
-
     private fun navigateToNewReport() {
         // findNavController().navigate(R.id.action_home_to_newReport)
         Toast.makeText(requireContext(), "Nuevo reporte", Toast.LENGTH_SHORT).show()
@@ -159,5 +167,183 @@ class HomeFragment : Fragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
+    }
+
+    private fun cargarPerfil(view: View) {
+        android.util.Log.e(
+            "HOME_TEST",
+            "Entró a cargarPerfil"
+        )
+
+        lifecycleScope.launch {
+            try {
+                val prefs = requireActivity()
+                    .getSharedPreferences(
+                        "ciudad_limpia",
+                        android.content.Context.MODE_PRIVATE
+                    )
+                val usuarioId =
+                    prefs.getLong(
+                        "usuario_id",
+                        0
+                    )
+                android.util.Log.e(
+                    "HOME_TEST",
+                    "usuarioId=$usuarioId"
+                )
+                val token =
+                    prefs.getString(
+                        "jwt_token",
+                        ""
+                    ) ?: ""
+                val response =
+                    RetrofitClient
+                        .apiService
+                        .getPerfil(
+                            "Bearer $token",
+                            usuarioId
+                        )
+                android.util.Log.e(
+                    "HOME_TEST",
+                    "responseCode=${response.code()}"
+                )
+                android.util.Log.e(
+                    "HOME_TEST",
+                    "isSuccessful=${response.isSuccessful}"
+                )
+                if(response.isSuccessful){
+                    android.util.Log.e(
+                        "HOME_TEST",
+                        "body=${response.body()}"
+                    )
+                    val perfil =
+                        response.body() ?: return@launch
+                    mostrarPerfil(
+                        view,
+                        perfil
+                    )
+                }
+            }catch (e: Exception){
+                Toast.makeText(
+                    requireContext(),
+                    e.message ?: "Error desconocido",
+                    Toast.LENGTH_LONG
+                ).show()
+                android.util.Log.e(
+                    "HOME_TEST",
+                    "ERROR=${e.message}"
+                )
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun mostrarPerfil(
+        view: View,
+        perfil: PerfilResponse
+    ) {
+        view.findViewById<TextView>(
+            R.id.tvAppName
+        )?.text =
+            "${perfil.nombre} ${perfil.apellido}"
+        view.findViewById<TextView>(
+            R.id.tvUserRank
+        )?.text =
+            perfil.nivel.nombre
+
+        view.findViewById<TextView>(
+            R.id.tvLevelBadge
+        )?.text = "LVL ${perfil.nivel.id}"
+
+        view.findViewById<TextView>(
+            R.id.tvPoints
+        )?.text =
+            "${perfil.puntosTotal} pts"
+        //cargar foto del usuario
+        val imgAvatar =
+            view.findViewById<ImageView>(
+                R.id.imgAvatar
+            )
+
+        if (!perfil.fotoPerfil.isNullOrEmpty()) {
+            val ruta =
+                perfil.fotoPerfil
+                    .replace("\"", "")
+
+            val file = File(ruta)
+
+            if (file.exists()) {
+
+                imgAvatar.setImageURI(
+                    Uri.fromFile(file)
+                )
+            }
+        }
+
+        view.findViewById<TextView>(
+            R.id.tvStatResueltos
+        )?.text =
+            perfil.reportesAtendidos.toString()
+
+        view.findViewById<TextView>(
+            R.id.tvStatComunidad
+        )?.text =
+            perfil.totalReportes.toString()
+
+        //mostrar el nivel que sigue
+        view.findViewById<TextView>(
+            R.id.tvNextLevelLabel
+        )?.text =
+            "PRÓXIMO NIVEL: ${perfil.siguienteNivel}"
+
+        progressPercent =
+            (
+                    perfil.puntosTotal.toFloat() /
+                            perfil.nivel.puntosParaSiguienteNivel.toFloat()
+                    ).coerceIn(0f, 1f)
+
+        val porcentaje =
+            (progressPercent * 100).toInt()
+
+        val mensajeMotivacional = when {
+
+            porcentaje < 20 ->
+                "🌱 Cada reporte ayuda a mejorar la ciudad."
+
+            porcentaje < 40 ->
+                "🧹 Tu compromiso ya está generando impacto."
+
+            porcentaje < 60 ->
+                "🚮 La comunidad agradece tu participación."
+
+            porcentaje < 80 ->
+                "🌎 Estás contribuyendo a una ciudad más limpia."
+
+            porcentaje < 95 ->
+                "🏅 Estás muy cerca de alcanzar un nuevo nivel."
+
+            else ->
+                "🎉 ¡Solo falta un poco más para convertirte en ${perfil.siguienteNivel}!"
+        }
+
+        view.findViewById<TextView>(
+            R.id.tvProgressPercent
+        )?.text = "$porcentaje%"
+
+        view.findViewById<TextView>(
+            R.id.tvMotivationalTitle
+        )?.text = mensajeMotivacional
+
+        android.util.Log.e(
+            "PROGRESO_TEST",
+            "puntosTotal=${perfil.puntosTotal} - puntosParaSiguienteNivel=${perfil.nivel.puntosParaSiguienteNivel}"
+        )
+
+        android.util.Log.e(
+            "PROGRESO_TEST",
+            "progressPercent=$progressPercent"
+        )
+
+        setupProgressBar(view)
     }
 }

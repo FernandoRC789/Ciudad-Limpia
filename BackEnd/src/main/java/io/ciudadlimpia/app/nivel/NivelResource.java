@@ -53,5 +53,4 @@ public class NivelResource {
         nivelService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -94,4 +94,8 @@
     <color name="step_line_inactive">#DEE3ED</color>
     <color name="gps_banner_bg">#EEF2FF</color>
     <color name="error_red">#E53935</color>
+
+    <color name="status_pending_text">#856404</color>
+
+
 </resources>

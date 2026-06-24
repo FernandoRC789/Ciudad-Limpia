@@ -45,7 +45,7 @@
             android:gravity="center"
             android:paddingStart="@dimen/badge_padding_h"
             android:paddingEnd="@dimen/badge_padding_h"
-            android:text="@string/label_lvl_24"
+            android:text=""
             android:textAppearance="@style/TextAppearance.CivicHero.Badge"
             android:textColor="@color/white" />
 

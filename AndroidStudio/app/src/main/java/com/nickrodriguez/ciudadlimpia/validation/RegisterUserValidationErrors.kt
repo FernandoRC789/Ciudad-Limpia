@@ -6,12 +6,10 @@ class RegisterUserValidationErrors (
     val apellido: String? = null,
     val email: String? = null,
     val telefono: String? = null,
-    //val fechaNacimiento: String? = null,
-    //val genero: String? = null,
+    val distrito: String? = null,
+    val direccion: String? = null,
     val password: String? = null,
     val confirmPassword: String? = null
-    //val distrito: String? = null,
-    //val direccion: String? = null
 ){
     fun hasErrors(): Boolean {
 
@@ -21,6 +19,8 @@ class RegisterUserValidationErrors (
             apellido,
             email,
             telefono,
+            distrito,
+            direccion,
             password,
             confirmPassword
         ).any { it != null }

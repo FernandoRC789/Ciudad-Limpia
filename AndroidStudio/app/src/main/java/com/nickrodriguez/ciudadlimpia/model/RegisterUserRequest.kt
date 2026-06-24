@@ -6,5 +6,7 @@ class RegisterUserRequest (
     val apellido: String,
     val email: String,
     val password: String,
-    val telefono: String
-    )
+    val telefono: String,
+    val distrito: String,
+    val direccion: String,
+)

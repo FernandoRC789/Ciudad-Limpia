@@ -18,8 +18,6 @@
       • genero           → AutoCompleteTextView / Spinner (M/F/Prefiero no decirlo)
       • foto_perfil      → Vista de selección de foto (opcional en registro)
     ─────────────────────────────────────────────────────
-    Los campos de Paso 2 (distrito, dirección, referencia,
-    latitud, longitud) van en include_register_form_location.xml
 -->
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,9 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_dni"
-            app:startIconDrawable="@drawable/ic_camera"
-            app:startIconTint="@color/icon_field"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_dni"
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDni"
@@ -54,6 +52,7 @@
                 android:layout_height="@dimen/field_height"
                 android:inputType="number"
                 android:maxLength="8"
+                android:paddingStart="45dp"
                 android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -106,15 +105,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_email"
+            app:errorEnabled="true"
             app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/icon_field"
-            app:errorEnabled="true">
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
                 android:inputType="textEmailAddress"
+                android:paddingStart="45dp"
                 android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,10 +127,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_telefono"
-            app:startIconDrawable="@drawable/ic_image_placeholder"
-            app:startIconTint="@color/icon_field"
+            app:errorEnabled="true"
             app:prefixText="@string/phone_prefix"
-            app:errorEnabled="true">
+            app:startIconDrawable="@drawable/ic_numberphone"
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTelefono"
@@ -138,54 +138,54 @@
                 android:layout_height="@dimen/field_height"
                 android:inputType="phone"
                 android:maxLength="9"
+                android:paddingStart="45dp"
                 android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- ── FECHA DE NACIMIENTO (campo nuevo) ────────────────
+        <!-- ── DIRECCIÓN ───────────────────────────────────────── -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFechaNacimiento"
+            android:id="@+id/tilDireccion"
             style="@style/Widget.CivicHero.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
-            android:hint="@string/hint_fecha_nacimiento"
-            app:startIconDrawable="@drawable/ic_c"
-            app:startIconTint="@color/icon_field"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_calendar_outline"
-            app:endIconTint="@color/icon_field"
-            app:errorEnabled="true">
+            android:hint="@string/hint_direccion"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_home"
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFechaNacimiento"
+                android:id="@+id/etDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
-                android:focusable="false"
-                android:inputType="none"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:capitalize="sentences"
+                android:inputType="textPostalAddress"
+                android:paddingStart="45dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>-->
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- ── GÉNERO (campo nuevo) ─────────────────────────────
+        <!-- ── DISTRITO ───────────────────────────────────────── -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilGenero"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/tilDistrito"
+            style="@style/Widget.CivicHero.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
-            android:hint="@string/hint_genero"
-            app:errorEnabled="true">
+            android:hint="@string/hint_distrito"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_home"
+            app:startIconTint="@color/icon_field">
 
-            <AutoCompleteTextView
-                android:id="@+id/actvGenero"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDistito"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
-                android:focusable="false"
-                android:inputType="none"
-                android:textAppearance="@style/TextAppearance.CivicHero.FieldText" />
+                android:capitalize="sentences"
+                android:inputType="textPostalAddress"
+                android:paddingStart="45dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>-->
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- ── CONTRASEÑA ─────────────────────────────────────── -->
         <com.google.android.material.textfield.TextInputLayout
@@ -195,16 +195,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/field_spacing"
             android:hint="@string/hint_password"
-            app:startIconDrawable="@drawable/ic_star"
-            app:startIconTint="@color/icon_field"
             app:endIconMode="password_toggle"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/field_height"
                 android:inputType="textPassword"
+                android:paddingStart="45dp"
                 android:textAppearance="@style/TextAppearance.CivicHero.StatLabel" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -216,10 +217,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_confirm_password"
-            app:startIconDrawable="@drawable/ic_camera"
-            app:startIconTint="@color/icon_field"
             app:endIconMode="password_toggle"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/icon_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmPassword"

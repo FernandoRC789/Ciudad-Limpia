@@ -20,13 +20,13 @@
         android:orientation="vertical"
         android:padding="@dimen/card_padding">
 
-        <!-- Etiqueta "PRÓXIMO NIVEL: GUARDIÁN MUNICIPAL" -->
+        <!-- Etiqueta "PRÓXIMO NIVEL: """ -->
         <TextView
             android:id="@+id/tvNextLevelLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_xs"
-            android:text="@string/label_next_level"
+            android:text=""
             android:textAppearance="@style/TextAppearance.CivicHero.LabelMuted"
             android:textColor="@color/white_60" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/title_almost_there"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.CivicHero.HeroTitle"
                 android:textColor="@color/white" />
 
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_sm"
-                android:text="@string/progress_85"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.CivicHero.HeroTitle"
                 android:textColor="@color/white" />
 

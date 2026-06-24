@@ -61,5 +61,4 @@ public class GamingProfile {
 
     @OneToMany(mappedBy = "gamingProfile")
     private Set<TransaccionPuntos> gamingProfileTransaccionPuntoses = new HashSet<>();
-
 }
