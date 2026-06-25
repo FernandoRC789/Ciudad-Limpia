@@ -1,6 +1,7 @@
 package com.nickrodriguez.ciudadlimpia.ui.home
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,37 +25,150 @@ import kotlinx.coroutines.launch
 import android.net.Uri
 import android.widget.ImageView
 import java.io.File
+import com.nickrodriguez.ciudadlimpia.viewmodel.SharedProfileViewModel
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class HomeFragment : Fragment() {
+
+    private val profileViewModel: SharedProfileViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MisReportesAdapter
-
     private var progressPercent = 0f
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_home, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(
             AppCompatDelegate.MODE_NIGHT_NO
         )
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.rvRecentReports)
+        /*recyclerView = view.findViewById(R.id.rvRecentReports)
 
         recyclerView.layoutManager =
-            LinearLayoutManager(requireContext())
+            LinearLayoutManager(requireContext())*/
 
         adapter = MisReportesAdapter(
             mutableListOf()
         )
 
-        recyclerView.adapter = adapter
+        /*recyclerView.adapter = adapter*/
 
-        cargarPerfil(view)
-        cargarReportes()
+        val swipeRefresh =
+            view.findViewById<SwipeRefreshLayout>(
+                R.id.swipeRefresh
+            )
+
+        /*swipeRefresh.setOnRefreshListener {
+
+            //cargarPerfil(view)
+            //cargarReportes()
+
+
+            profileViewModel.refrescarDatos(
+                token,
+                usuarioId
+            )
+            swipeRefresh.isRefreshing = false        }*/
+
+        swipeRefresh.setOnRefreshListener {
+
+            recargarDatos(
+                view,
+                swipeRefresh
+            )
+        }
+
+        //cargarPerfil(view)
+        //cargarReportes()
+        setupRecyclerView(view)
+        observeViewModel(view)
+        setupClickListeners(view)
+        triggerDataLoad()
     }
-    private fun cargarReportes() {
+
+    private fun setupRecyclerView(view: View) {
+        recyclerView = view.findViewById(R.id.rvRecentReports)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = MisReportesAdapter(mutableListOf())
+        recyclerView.adapter = adapter
+    }
+
+    /*private fun recargarDatos(
+        view: View,
+        swipeRefresh: SwipeRefreshLayout
+    ) {
+        lifecycleScope.launch {
+
+            cargarPerfil(view)
+            cargarReportes()
+
+            swipeRefresh.isRefreshing = false
+        }
+    }*/
+    private fun recargarDatos(
+        view: View,
+        swipeRefresh: SwipeRefreshLayout
+    ) {
+
+        val prefs =
+            requireActivity().getSharedPreferences(
+                "ciudad_limpia",
+                android.content.Context.MODE_PRIVATE
+            )
+
+        val token =
+            prefs.getString(
+                "jwt_token",
+                ""
+            ) ?: ""
+
+        val usuarioId =
+            prefs.getLong(
+                "usuario_id",
+                0
+            )
+
+        profileViewModel.refrescarDatos(
+            token,
+            usuarioId
+        )
+
+        swipeRefresh.isRefreshing = false
+    }
+
+    // ── Observa el ViewModel en vez de llamar a la red directamente ────────────
+    private fun observeViewModel(view: View) {
+        profileViewModel.perfil.observe(viewLifecycleOwner) { perfil ->
+            perfil?.let { mostrarPerfil(view, it) }
+        }
+
+        profileViewModel.reportes.observe(viewLifecycleOwner) { reportes ->
+            adapter.actualizarLista(reportes)
+        }
+
+        profileViewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    // ── Pide datos SOLO si no están ya cargados (ver ViewModel) ─────────────────
+    private fun triggerDataLoad() {
+        val prefs = requireActivity().getSharedPreferences(
+            "ciudad_limpia", android.content.Context.MODE_PRIVATE
+        )
+        val token = prefs.getString("jwt_token", "") ?: ""
+        val usuarioId = prefs.getLong("usuario_id", 0)
+
+        profileViewModel.cargarPerfilSiEsNecesario(token, usuarioId)
+        profileViewModel.cargarReportesSiEsNecesario(token)
+    }
+    /*private fun cargarReportes() {
 
         lifecycleScope.launch {
 
@@ -97,7 +212,7 @@ class HomeFragment : Fragment() {
                 ).show()
             }
         }
-    }
+    }*/
 
     // ── Barra de progreso animada ─────────────────────────────────────────────
     private fun setupProgressBar(view: View) {
@@ -160,16 +275,53 @@ class HomeFragment : Fragment() {
     private fun navigateToNotifications() {
         Toast.makeText(requireContext(), "Notificaciones", Toast.LENGTH_SHORT).show()
     }
-
     private fun shareAchievements() {
-        Toast.makeText(requireContext(), "Compartir logros", Toast.LENGTH_SHORT).show()
+
+        val nivel =
+            requireView().findViewById<TextView>(
+                R.id.tvUserRank
+            ).text
+
+        val puntos =
+            requireView().findViewById<TextView>(
+                R.id.tvPoints
+            ).text
+
+        val texto =
+            """
+🏆 Estoy ayudando a mantener limpia mi ciudad con Ciudad Limpia.
+
+⭐ Nivel: $nivel
+🎯 Puntos: $puntos
+
+¡Juntos podemos construir una ciudad mejor!
+        """.trimIndent()
+
+        val intent = Intent().apply {
+
+            action = Intent.ACTION_SEND
+
+            putExtra(
+                Intent.EXTRA_TEXT,
+                texto
+            )
+
+            type = "text/plain"
+        }
+
+        startActivity(
+            Intent.createChooser(
+                intent,
+                "Compartir logro"
+            )
+        )
     }
 
     companion object {
         fun newInstance() = HomeFragment()
     }
 
-    private fun cargarPerfil(view: View) {
+    /*private fun cargarPerfil(view: View) {
         android.util.Log.e(
             "HOME_TEST",
             "Entró a cargarPerfil"
@@ -201,7 +353,7 @@ class HomeFragment : Fragment() {
                         .apiService
                         .getPerfil(
                             "Bearer $token",
-                            usuarioId
+                            //usuarioId
                         )
                 android.util.Log.e(
                     "HOME_TEST",
@@ -236,7 +388,7 @@ class HomeFragment : Fragment() {
                 e.printStackTrace()
             }
         }
-    }
+    }*/
 
     private fun mostrarPerfil(
         view: View,

@@ -14,6 +14,8 @@ import com.nickrodriguez.ciudadlimpia.R
 import com.nickrodriguez.ciudadlimpia.model.AuthRequest
 import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
 import kotlinx.coroutines.launch
+import android.util.Patterns
+import com.nickrodriguez.ciudadlimpia.validation.Validator
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
@@ -44,27 +45,17 @@ class LoginActivity : AppCompatActivity() {
     private fun setupListeners() {
 
         btnLogin.setOnClickListener {
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
 
-            val email =
-                etEmail.text.toString().trim()
+            val emailOk = validateEmail()
+            val passwordOk = validatePassword()
 
-            val password =
-                etPassword.text.toString().trim()
-
-            if(email.isEmpty()){
-
-                etEmail.error = "Ingrese su email"
-                return@setOnClickListener
-            }
-
-            if(password.isEmpty()){
-
-                etPassword.error = "Ingrese su contraseña"
-                return@setOnClickListener
-            }
-
-            login(email, password)
-        }
+            if (emailOk && passwordOk) {
+                login(email, password)
+            } else {
+                Toast.makeText(this, "Revisa los campos", Toast.LENGTH_SHORT).show()
+            }        }
 
         tvRegister.setOnClickListener {
 
@@ -74,6 +65,15 @@ class LoginActivity : AppCompatActivity() {
                     RegisterUsuarioActivity::class.java
                 )
             )
+        }
+
+        // 👇 VALIDACIÓN AL PERDER FOCO (UX PRO)
+        etEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) validateEmail()
+        }
+
+        etPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) validatePassword()
         }
     }
 
@@ -153,5 +153,55 @@ class LoginActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun validarCampos(
+        email: String,
+        password: String
+    ): Boolean {
+
+        if (email.isBlank()) {
+
+            etEmail.error = "Ingrese su correo electrónico"
+            etEmail.requestFocus()
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+            etEmail.error = "Ingrese un correo válido"
+            etEmail.requestFocus()
+            return false
+        }
+
+        if (password.isBlank()) {
+
+            etPassword.error = "Ingrese su contraseña"
+            etPassword.requestFocus()
+            return false
+        }
+
+        if (password.length < 8) {
+
+            etPassword.error =
+                "La contraseña debe tener al menos 8 caracteres"
+
+            etPassword.requestFocus()
+            return false
+        }
+
+        return true
+    }
+
+    private fun validateEmail(): Boolean {
+        val error = Validator.getEmailError(etEmail.text.toString())
+        etEmail.error = error
+        return error == null
+    }
+
+    private fun validatePassword(): Boolean {
+        val error = Validator.getPasswordError(etPassword.text.toString())
+        etPassword.error = error
+        return error == null
     }
 }

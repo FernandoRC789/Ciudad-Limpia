@@ -12,11 +12,6 @@
       • email        → TextInputLayout (email)
       • telefono     → TextInputLayout (phone, prefijo país)
       • password     → TextInputLayout (password, toggle visibilidad)
-
-    CAMPOS NUEVOS SUGERIDOS (necesarios para la app):
-      • fecha_nacimiento → TextInputLayout + DatePicker (para validar mayoría de edad)
-      • genero           → AutoCompleteTextView / Spinner (M/F/Prefiero no decirlo)
-      • foto_perfil      → Vista de selección de foto (opcional en registro)
     ─────────────────────────────────────────────────────
 -->
 <androidx.cardview.widget.CardView
@@ -168,23 +163,16 @@
         <!-- ── DISTRITO ───────────────────────────────────────── -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDistrito"
-            style="@style/Widget.CivicHero.TextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/field_spacing"
-            android:hint="@string/hint_distrito"
-            app:errorEnabled="true"
-            app:startIconDrawable="@drawable/ic_home"
-            app:startIconTint="@color/icon_field">
+            android:hint="Distrito">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDistito"
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/actvDistrito"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/field_height"
-                android:capitalize="sentences"
-                android:inputType="textPostalAddress"
-                android:paddingStart="45dp" />
-
+                android:layout_height="wrap_content"
+                android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- ── CONTRASEÑA ─────────────────────────────────────── -->

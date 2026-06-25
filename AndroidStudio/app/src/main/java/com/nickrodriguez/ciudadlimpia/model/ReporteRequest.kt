@@ -1,4 +1,9 @@
 package com.nickrodriguez.ciudadlimpia.model
 
-class ReporteRequest {
-}
+data class ReporteRequest(
+    val titulo: String,
+    val descripcion: String,
+    val latitud: Double,
+    val longitud: Double,
+    val direccion: String
+)
