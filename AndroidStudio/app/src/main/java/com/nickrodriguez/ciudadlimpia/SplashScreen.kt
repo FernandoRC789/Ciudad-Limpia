@@ -27,13 +27,13 @@ class SplashScreen : AppCompatActivity() {
             MODE_PRIVATE
         )
 
-        val onboardingCompleted = false
+        //val onboardingCompleted = false
 
-        /*val onboardingCompleted =
+        val onboardingCompleted =
             prefs.getBoolean(
                 "onboarding_completed",
                 false
-            )*/
+            )
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_splashscreen)) { view, insets ->
@@ -79,6 +79,10 @@ class SplashScreen : AppCompatActivity() {
             .start()
 
         Handler(Looper.getMainLooper()).postDelayed({
+            android.util.Log.d(
+                "SPLASH",
+                "onboardingCompleted = $onboardingCompleted"
+            )
             if(onboardingCompleted){
 
                 startActivity(
@@ -100,6 +104,6 @@ class SplashScreen : AppCompatActivity() {
 
             finish()
 
-        }, 3000)
+        }, 2500)
     }
 }

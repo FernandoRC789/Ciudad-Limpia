@@ -158,7 +158,13 @@ class ProfileFragment : Fragment() {
                 val prefs = requireActivity().getSharedPreferences(
                     "ciudad_limpia", android.content.Context.MODE_PRIVATE
                 )
-                prefs.edit().clear().apply()
+                //prefs.edit().clear().apply()
+                prefs.edit()
+                    .remove("jwt_token")
+                    .remove("rol")
+                    .remove("usuario_id")
+                    .remove("foto_perfil") // opcional, si también quieres limpiar la foto local
+                    .apply()
 
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
                 requireActivity().finish()

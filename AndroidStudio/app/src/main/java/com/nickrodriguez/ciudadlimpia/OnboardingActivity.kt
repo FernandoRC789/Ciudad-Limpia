@@ -282,6 +282,12 @@ class OnboardingActivity : AppCompatActivity() {
                 true
             )
             .apply()
+
+        android.util.Log.d(
+            "ONBOARDING",
+            "Guardado: ${
+                prefs.getBoolean("onboarding_completed", false) }")
+
     }
 
     private fun navigateToLogin() {

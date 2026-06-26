@@ -15,6 +15,7 @@ import com.nickrodriguez.ciudadlimpia.model.AuthRequest
 import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
 import kotlinx.coroutines.launch
 import android.util.Patterns
+import com.nickrodriguez.ciudadlimpia.ui.admin.MapaAdminActivity
 import com.nickrodriguez.ciudadlimpia.validation.Validator
 
 class LoginActivity : AppCompatActivity() {
@@ -119,6 +120,13 @@ class LoginActivity : AppCompatActivity() {
                             )
                             .apply()
 
+                        // Navegar según el rol
+                        val destino = if (authResponse.rol.contains("ADMIN")) {
+                            MapaAdminActivity::class.java
+                        } else {
+                            MainActivity::class.java
+                        }
+
                         Toast.makeText(
                             this@LoginActivity,
                             "Bienvenido ${authResponse.rol}",
@@ -128,7 +136,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@LoginActivity,
-                                MainActivity::class.java
+                                destino
                             )
                         )
 
