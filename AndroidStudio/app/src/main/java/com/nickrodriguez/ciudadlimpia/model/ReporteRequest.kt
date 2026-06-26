@@ -5,5 +5,6 @@ data class ReporteRequest(
     val descripcion: String,
     val latitud: Double,
     val longitud: Double,
-    val direccion: String
+    val direccion: String,
+    val fotos: List<String> = emptyList() // URLs de Cloudinary
 )

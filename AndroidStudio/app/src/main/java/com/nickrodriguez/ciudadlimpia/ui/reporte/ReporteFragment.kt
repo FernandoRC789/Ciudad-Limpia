@@ -28,13 +28,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.nickrodriguez.ciudadlimpia.MainActivity
+import com.nickrodriguez.ciudadlimpia.model.PerfilResponse
 import com.nickrodriguez.ciudadlimpia.model.ReporteRequest
+import com.nickrodriguez.ciudadlimpia.network.CloudinaryService
 import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
+import com.nickrodriguez.ciudadlimpia.viewmodel.SharedProfileViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Locale
+import kotlin.getValue
 
 class ReporteFragment : Fragment() {
+    private val profileViewModel: SharedProfileViewModel by activityViewModels()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val cancellationTokenSource = CancellationTokenSource()
@@ -112,6 +121,7 @@ class ReporteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel(view)
 
         cardFoto = view.findViewById(R.id.cardFoto)
         layoutSubirFoto = view.findViewById(R.id.layoutSubirFoto)
@@ -133,8 +143,28 @@ class ReporteFragment : Fragment() {
         btnEnviarReporte.setOnClickListener {
             enviarReporte()
         }
+
+    }
+    private fun observeViewModel(view: View) {
+        profileViewModel.perfil.observe(viewLifecycleOwner) { perfil ->
+            perfil?.let {
+                actualizarHeader(it, view)
+            }
+        }
     }
 
+    private fun actualizarHeader(perfil: PerfilResponse, view: View) {
+        view.findViewById<TextView>(R.id.tvAppName)?.text =
+            "${perfil.nombre} ${perfil.apellido}"
+
+        view.findViewById<TextView>(R.id.tvUserRank)?.text =
+            perfil.nivel.nombre
+
+        view.findViewById<TextView>(
+            R.id.tvPoints
+        )?.text =
+            "${perfil.puntosTotal} pts"
+    }
     // ---------- UBICACIÓN ----------
 
     private fun verificarPermisoUbicacion() {
@@ -244,66 +274,126 @@ class ReporteFragment : Fragment() {
     }
 
     // ---------- ENVÍO DEL REPORTE ----------
-
     private fun enviarReporte() {
         val titulo = etTitulo.text?.toString()?.trim().orEmpty()
         val descripcion = etDescripcion.text?.toString()?.trim().orEmpty()
         val direccion = etDireccion.text?.toString()?.trim().orEmpty()
 
-        if (titulo.isEmpty()) {
-            etTitulo.error = "Ingresa un título"
-            return
-        }
-        if (descripcion.isEmpty()) {
-            etDescripcion.error = "Describe el problema"
-            return
-        }
-        if (direccion.isEmpty()) {
-            etDireccion.error = "Ingresa una dirección"
-            return
-        }
+        if (titulo.isEmpty()) { etTitulo.error = "Ingresa un título"; return }
+        if (descripcion.isEmpty()) { etDescripcion.error = "Describe el problema"; return }
+        if (direccion.isEmpty()) { etDireccion.error = "Ingresa una dirección"; return }
         if (latitud == 0.0 && longitud == 0.0) {
-            Toast.makeText(
-                requireContext(),
-                "Aún no tenemos tu ubicación, espera unos segundos e intenta de nuevo",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(requireContext(), "Espera a que se detecte tu ubicación", Toast.LENGTH_LONG).show()
             return
         }
 
+        btnEnviarReporte.isEnabled = false
+        btnEnviarReporte.text = "Enviando..."
+
+        val sessionManager = com.nickrodriguez.ciudadlimpia.utils.SessionManager(requireContext())
+        val token = sessionManager.getToken()
+
+        if (token == null) {
+            Toast.makeText(requireContext(), "Sesión expirada, vuelve a iniciar sesión", Toast.LENGTH_LONG).show()
+            btnEnviarReporte.isEnabled = true
+            btnEnviarReporte.text = "Enviar Reporte"
+            return
+        }
+
+        // Si hay fotos, primero las subimos a Cloudinary
+        if (imagenesSeleccionadas.isNotEmpty()) {
+            val urlsSubidas = mutableListOf<String>()
+            var fotosProcessadas = 0
+
+            imagenesSeleccionadas.forEach { uri ->
+                val archivo = uriToFile(uri)
+                if (archivo == null) {
+                    fotosProcessadas++
+                    if (fotosProcessadas == imagenesSeleccionadas.size) {
+                        enviarReporteAlBackend(titulo, descripcion, direccion, token, urlsSubidas)
+                    }
+                    return@forEach
+                }
+
+                CloudinaryService.subirFoto(
+                    archivo = archivo,
+                    onExito = { url ->
+                        urlsSubidas.add(url)
+                        fotosProcessadas++
+                        if (fotosProcessadas == imagenesSeleccionadas.size) {
+                            activity?.runOnUiThread {
+                                enviarReporteAlBackend(titulo, descripcion, direccion, token, urlsSubidas)
+                            }
+                        }
+                    },
+                    onError = { error ->
+                        fotosProcessadas++
+                        // Si falla la subida de una foto, continuamos sin ella
+                        if (fotosProcessadas == imagenesSeleccionadas.size) {
+                            activity?.runOnUiThread {
+                                enviarReporteAlBackend(titulo, descripcion, direccion, token, urlsSubidas)
+                            }
+                        }
+                    }
+                )
+            }
+        } else {
+            // Sin fotos, enviar directo
+            enviarReporteAlBackend(titulo, descripcion, direccion, token, emptyList())
+        }
+    }
+
+    private fun enviarReporteAlBackend(
+        titulo: String,
+        descripcion: String,
+        direccion: String,
+        token: String,
+        fotos: List<String>
+    ) {
         val reporte = ReporteRequest(
             titulo = titulo,
             descripcion = descripcion,
             latitud = latitud,
             longitud = longitud,
-            direccion = direccion
+            direccion = direccion,
+            fotos = fotos
         )
-
-        btnEnviarReporte.isEnabled = false
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val response = RetrofitClient.apiService.crearReporte(reporte)
+                val response = RetrofitClient.apiService.crearReporte("Bearer $token", reporte)
 
                 if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Reporte enviado correctamente", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "✅ Reporte enviado correctamente", Toast.LENGTH_LONG).show()
                     limpiarFormulario()
+                    irAHome()
+
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Error del servidor (${response.code()})",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(requireContext(), "Error del servidor (${response.code()})", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Sin conexión o error de red: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(requireContext(), "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
                 btnEnviarReporte.isEnabled = true
+                btnEnviarReporte.text = "Enviar Reporte"
             }
+        }
+    }
+
+    private fun irAHome() {
+        val activity = requireActivity() as MainActivity
+        activity.findViewById<BottomNavigationView>(R.id.bottomNavigation)
+            .selectedItemId = R.id.nav_feed
+    }
+
+    private fun uriToFile(uri: Uri): File? {
+        return try {
+            val inputStream = requireContext().contentResolver.openInputStream(uri) ?: return null
+            val tempFile = File.createTempFile("foto_", ".jpg", requireContext().cacheDir)
+            tempFile.outputStream().use { output -> inputStream.copyTo(output) }
+            tempFile
+        } catch (e: Exception) {
+            null
         }
     }
 
@@ -317,4 +407,5 @@ class ReporteFragment : Fragment() {
         super.onDestroyView()
         cancellationTokenSource.cancel()
     }
+
 }

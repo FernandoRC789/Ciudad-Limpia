@@ -5,4 +5,5 @@ data class AuthResponse(
     val tipo: String,
     val rol: String,
     val usuarioId: Long
+
 )

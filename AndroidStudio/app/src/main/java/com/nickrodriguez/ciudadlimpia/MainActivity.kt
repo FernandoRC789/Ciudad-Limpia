@@ -9,6 +9,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nickrodriguez.ciudadlimpia.ui.auth.LoginActivity
 import com.nickrodriguez.ciudadlimpia.ui.home.HomeFragment
 import com.nickrodriguez.ciudadlimpia.ui.profile.ProfileFragment
+import com.nickrodriguez.ciudadlimpia.ui.reporte.ReporteFragment
+import com.nickrodriguez.ciudadlimpia.ui.rewards.RewardsFragment
+
 
 /**
  * MainActivity — CORREGIDA
@@ -29,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     // ── Los Fragments viven aquí, una sola instancia de cada uno ──────────────
     private val homeFragment by lazy { HomeFragment() }
     private val profileFragment by lazy { ProfileFragment() }
+    private val rewardsFragment by lazy { RewardsFragment() }
+    private val reporteFragment by lazy { ReporteFragment() }
 
     // Fragment actualmente visible (para no llamar show() sobre el que ya se ve)
     private var activeFragment: Fragment = homeFragment
@@ -56,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, profileFragment, TAG_PROFILE)
             .hide(profileFragment)
+            .add(R.id.fragmentContainer, rewardsFragment, TAG_REWARDS)
+            .hide(rewardsFragment)
+            .add(R.id.fragmentContainer, reporteFragment, TAG_REPORT)
+            .hide(reporteFragment)
             .add(R.id.fragmentContainer, homeFragment, TAG_HOME)
             .commit()
 
@@ -67,6 +76,8 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener {
             val targetFragment = when (it.itemId) {
                 R.id.nav_feed    -> homeFragment
+                R.id.nav_rewards -> rewardsFragment
+                R.id.nav_report -> reporteFragment
                 R.id.nav_profile -> profileFragment
                 else             -> homeFragment
             }
@@ -93,6 +104,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG_HOME = "fragment_home"
+        private const val TAG_REWARDS = "fragment_rewards"
         private const val TAG_PROFILE = "fragment_profile"
+        private const val TAG_REPORT = "fragment_registrar_reporte"
     }
 }

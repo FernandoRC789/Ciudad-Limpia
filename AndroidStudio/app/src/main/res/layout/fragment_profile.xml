@@ -109,20 +109,6 @@ android:fillViewport="true"
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Badge Level -->
-            <TextView
-                android:id="@+id/tvLevelBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:background="@drawable/bg_level_badge"
-                android:gravity="center"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
         </FrameLayout>
 
         <!-- Nombre -->
@@ -296,7 +282,7 @@ android:fillViewport="true"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tvVerTodos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -304,7 +290,7 @@ android:fillViewport="true"
                 android:focusable="true"
                 android:text="Ver todos"
                 android:textColor="#1565C0"
-                android:textSize="14sp" />
+                android:textSize="14sp" />-->
 
         </LinearLayout>
 

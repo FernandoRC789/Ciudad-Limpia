@@ -24,12 +24,13 @@ import com.nickrodriguez.ciudadlimpia.network.RetrofitClient
 import kotlinx.coroutines.launch
 import android.net.Uri
 import android.widget.ImageView
+import androidx.core.widget.NestedScrollView
 import java.io.File
 import com.nickrodriguez.ciudadlimpia.viewmodel.SharedProfileViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
-
     private val profileViewModel: SharedProfileViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MisReportesAdapter
@@ -93,6 +94,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView(view: View) {
         recyclerView = view.findViewById(R.id.rvRecentReports)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.isNestedScrollingEnabled = false
         adapter = MisReportesAdapter(mutableListOf())
         recyclerView.adapter = adapter
     }
@@ -131,7 +133,12 @@ class HomeFragment : Fragment() {
                 "usuario_id",
                 0
             )
+        val nestedScroll =
+            view.findViewById<NestedScrollView>(R.id.nestedScrollView)
 
+        swipeRefresh.setOnChildScrollUpCallback { _, _ ->
+            nestedScroll.canScrollVertically(-1)
+        }
         profileViewModel.refrescarDatos(
             token,
             usuarioId
@@ -238,20 +245,15 @@ class HomeFragment : Fragment() {
         view.findViewById<MaterialButton>(R.id.btnReportIncident)
             ?.setOnClickListener {
 
-                parentFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.fragmentContainer,
-                        ReporteFragment()
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                requireActivity()
+                    .findViewById<BottomNavigationView>(R.id.bottomNavigation)
+                    .selectedItemId = R.id.nav_report
             }
 
         view.findViewById<MaterialButton>(R.id.btnShareAchievements)
             ?.setOnClickListener { shareAchievements() }
-        view.findViewById<TextView>(R.id.tvSeeAll)
-            ?.setOnClickListener { navigateToAllReports() }
+        //view.findViewById<TextView>(R.id.tvSeeAll)
+            //?.setOnClickListener { navigateToAllReports() }
         view.findViewById<android.widget.ImageButton>(R.id.btnNotifications)
             ?.setOnClickListener { navigateToNotifications() }
     }
@@ -404,10 +406,6 @@ class HomeFragment : Fragment() {
             perfil.nivel.nombre
 
         view.findViewById<TextView>(
-            R.id.tvLevelBadge
-        )?.text = "LVL ${perfil.nivel.id}"
-
-        view.findViewById<TextView>(
             R.id.tvPoints
         )?.text =
             "${perfil.puntosTotal} pts"
@@ -442,11 +440,11 @@ class HomeFragment : Fragment() {
         )?.text =
             perfil.totalReportes.toString()
 
-        //mostrar el nivel que sigue
+        /*mostrar el nivel que sigue
         view.findViewById<TextView>(
             R.id.tvNextLevelLabel
         )?.text =
-            "PRÓXIMO NIVEL: ${perfil.siguienteNivel}"
+            "PRÓXIMO NIVEL: ${perfil.siguienteNivel}"*/
 
         progressPercent =
             (

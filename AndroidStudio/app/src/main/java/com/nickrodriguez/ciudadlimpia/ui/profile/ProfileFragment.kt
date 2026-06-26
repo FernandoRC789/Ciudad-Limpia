@@ -95,7 +95,6 @@ class ProfileFragment : Fragment() {
         // Si Home ya cargó el perfil, esto no hace ninguna llamada de red
         profileViewModel.cargarPerfilSiEsNecesario(token, usuarioId)
     }
-
     private fun configurarEventos(view: View) {
         view.findViewById<LinearLayout>(R.id.btnCerrarSesion)
             .setOnClickListener { confirmLogout() }
@@ -106,15 +105,14 @@ class ProfileFragment : Fragment() {
         view.findViewById<View>(R.id.btnCanjearRecompensas)
             .setOnClickListener { navigateToRewards() }
 
-        view.findViewById<View>(R.id.tvVerTodos)
-            .setOnClickListener { navigateToAllBadges() }
+//        view.findViewById<View>(R.id.tvVerTodos)
+//            .setOnClickListener { navigateToAllBadges() }
     }
 
     private fun mostrarPerfil(view: View, perfil: PerfilResponse) {
         view.findViewById<TextView>(R.id.tvNombreUsuario)?.text =
             "${perfil.nombre} ${perfil.apellido}"
         view.findViewById<TextView>(R.id.tvNivelUsuario)?.text = perfil.nivel.nombre
-        view.findViewById<TextView>(R.id.tvLevelBadge)?.text = "LVL ${perfil.nivel.id}"
         view.findViewById<TextView>(R.id.tvReportesEnviados)?.text =
             perfil.totalReportes.toString()
         view.findViewById<TextView>(R.id.tvReportesEvaluados)?.text =

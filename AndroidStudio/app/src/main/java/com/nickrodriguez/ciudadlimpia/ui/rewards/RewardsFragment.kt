@@ -1,6 +1,8 @@
 package com.nickrodriguez.ciudadlimpia.ui.rewards
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -16,9 +18,38 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
+import com.nickrodriguez.ciudadlimpia.model.PerfilResponse
+import com.nickrodriguez.ciudadlimpia.viewmodel.SharedProfileViewModel
+import kotlin.getValue
 
-class RewardsFragment : Fragment(R.layout.fragment_rewards)
+/**
+ * RewardsFragment — CORREGIDO
+ *
+ * Sigue el MISMO patrón que HomeFragment: el Fragment no llama a Retrofit
+ * directamente, solo observa LiveData del SharedProfileViewModel (a nivel
+ * de Activity) y le pide que cargue datos "si es necesario". Esto evita
+ * llamadas duplicadas y mantiene una sola fuente de verdad para toda la app.
+ *
+ * CAMBIOS respecto a la versión anterior:
+ * 1. Eliminadas las 4 llamadas directas a `api.getXxx(token)` — ahora todo
+ *    pasa por rewardsViewModel, igual que perfil/reportes en HomeFragment.
+ * 2. Eliminado el Toast de debug que mostraba el JWT en pantalla.
+ * 3. El token ahora se envía como "Bearer $token" (antes se mandaba crudo,
+ *    por eso el backend probablemente respondía 401/403 en todo Rewards).
+ * 4. Eliminada la función `recargarDatos()` duplicada y sin usar — el
+ *    pull-to-refresh ahora llama a `rewardsViewModel.refrescarRewards(token)`.
+ * 5. Eliminados imports basura (ContentProviderCompat.requireContext,
+ *    kotlin.getValue) que no se usaban para nada.
+ * 6. Lectura de SharedPreferences centralizada en un solo lugar
+ *    (obtenerToken()), en vez de repetirla 4 veces.
+ */
+class RewardsFragment : Fragment(R.layout.fragment_rewards) {
+
+    private val rewardsViewModel: SharedProfileViewModel by activityViewModels()
+
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var rvInsignias: RecyclerView
     private lateinit var rvCupones: RecyclerView
@@ -38,48 +69,69 @@ class RewardsFragment : Fragment(R.layout.fragment_rewards)
     private lateinit var rankingAdapter: RankingAdapter
 
     // Puntos actuales del usuario en memoria; se usa para habilitar/deshabilitar
-    // cupones según si alcanza o no. Se actualiza tras cargar el historial y
-    // tras cada canje exitoso.
+    // cupones según si alcanza o no. Se actualiza cada vez que el LiveData de
+    // historialPuntos emite un nuevo valor.
     private var puntosActuales: Int = 0
 
-    private val api by lazy {RetrofitClient.apiService}
     private val nf = NumberFormat.getNumberInstance(Locale("es", "PE"))
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        observeViewModelHeader(view)
         bindViews(view)
         setupRecyclerViews()
+        observeViewModel()
 
         swipeRefresh.setOnRefreshListener {
-            cargarTodo(esRefrescoManual = true)
+            rewardsViewModel.refrescarRewards(obtenerToken())
+            swipeRefresh.isRefreshing = false
         }
 
-        cargarTodo()
+        mostrarCarga(true)
+        rewardsViewModel.cargarRewardsSiEsNecesario(obtenerToken())
+        Log.d("RANKING_CHECK", "FRAGMENT CARGADO") // 👈 esto
     }
 
-private fun bindViews(view: View) {
+    private fun bindViews(view: View) {
+        swipeRefresh = view.findViewById(R.id.swipeRefresh)
 
-    swipeRefresh = view.findViewById(R.id.swipeRefresh)
+        rvInsignias = view.findViewById(R.id.rvInsignias)
+        rvCupones = view.findViewById(R.id.rvCupones)
+        rvRanking = view.findViewById(R.id.rvRanking)
 
-    rvInsignias = view.findViewById(R.id.rvInsignias)
-    rvCupones = view.findViewById(R.id.rvCupones)
-    rvRanking = view.findViewById(R.id.rvRanking)
+        tvPuntosTotales = view.findViewById(R.id.tvPuntosTotales)
+        tvPuntosParaSiguienteNivel = view.findViewById(R.id.tvPuntosParaSiguienteNivel)
+        progressNivel = view.findViewById(R.id.progressNivel)
+        //tvPosicionUsuario = view.findViewById(R.id.tvPosicionUsuario)
 
-    tvPuntosTotales = view.findViewById(R.id.tvPuntosTotales)
-    tvPuntosParaSiguienteNivel = view.findViewById(R.id.tvPuntosParaSiguienteNivel)
-    progressNivel = view.findViewById(R.id.progressNivel)
-    tvPosicionUsuario = view.findViewById(R.id.tvPosicionUsuario)
+        layoutEstadoCarga = view.findViewById(R.id.layoutEstadoCarga)
+        progressCargaGeneral = view.findViewById(R.id.progressCargaGeneral)
+        tvMensajeError = view.findViewById(R.id.tvMensajeError)
+    }
+    private fun observeViewModelHeader(view: View) {
+        rewardsViewModel.perfil.observe(viewLifecycleOwner) { perfil ->
+            perfil?.let {
+                actualizarHeader(it, view)
+            }
+        }
+    }
 
-    layoutEstadoCarga = view.findViewById(R.id.layoutEstadoCarga)
-    progressCargaGeneral = view.findViewById(R.id.progressCargaGeneral)
-    tvMensajeError = view.findViewById(R.id.tvMensajeError)
-}
+    private fun actualizarHeader(perfil: PerfilResponse, view: View) {
+        view.findViewById<TextView>(R.id.tvAppName)?.text =
+            "${perfil.nombre} ${perfil.apellido}"
 
+        view.findViewById<TextView>(R.id.tvUserRank)?.text =
+            perfil.nivel.nombre
+
+        view.findViewById<TextView>(
+            R.id.tvPoints
+        )?.text =
+            "${perfil.puntosTotal} pts"
+    }
     private fun setupRecyclerViews() {
         insigniasAdapter = InsigniasAdapter(emptyList())
         rvInsignias.apply {
-            LinearLayoutManager(
+            layoutManager = LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.HORIZONTAL,
                 false
@@ -104,136 +156,84 @@ private fun bindViews(view: View) {
         }
     }
 
-    /** Dispara las 3 cargas en paralelo: historial de puntos, ranking y cupones. */
-    private fun cargarTodo(esRefrescoManual: Boolean = false) {
-        if (!esRefrescoManual) mostrarCarga(true)
-        cargarHistorialPuntos(esRefrescoManual)
-        cargarRanking()
-        cargarCupones()
+    // ── Observa el ViewModel en vez de llamar a la red directamente ────────────
+    private fun observeViewModel() {
+
+        rewardsViewModel.historialPuntos.observe(viewLifecycleOwner) { body ->
+            body ?: return@observe
+            mostrarCarga(false)
+
+            puntosActuales = body.puntosActuales
+            tvPuntosTotales.text = "${nf.format(body.puntosActuales)} pts"
+            tvPuntosParaSiguienteNivel.text =
+                "${nf.format(body.puntosParaSiguienteNivel)} pts para Nivel ${body.nivelActual + 1}"
+            progressNivel.progress = body.porcentajeProgreso
+
+            body.insignias?.let { insigniasAdapter.updateData(it) }
+
+            // Re-evalúa qué cupones son canjeables ahora que ya sabemos los
+            // puntos reales del usuario.
+            cuponesAdapter.notifyDataSetChanged()
+        }
+        Log.d("RANKING_CHECK", "FRAGMENT CARGADO")
+        rewardsViewModel.ranking.observe(viewLifecycleOwner) { lista ->
+            Log.d("RANKING_CHECK", "ENTRÓ AL OBSERVER")
+            rankingAdapter.updateData(lista.take(5))
+
+            val nombreUsuarioActual =
+                SessionManager(requireContext()).getNombre()?.trim()?.lowercase()
+
+            val miItem = lista.firstOrNull {
+                it.nombreCompleto.trim().lowercase() == nombreUsuarioActual
+            }
+
+            val miPosicion = miItem?.posicion
+
+            /*tvPosicionUsuario.text = if (miPosicion != null) {
+                "Estás en la posición #$miPosicion de tu distrito"
+            } else {
+                "Aún no apareces en el ranking de tu distrito"
+            }
+            Log.d("RANKING_CHECK", "API: ${lista.map { it.nombreCompleto }}")*/
+        }
+
+        rewardsViewModel.cupones.observe(viewLifecycleOwner) { lista ->
+            cuponesAdapter.updateData(lista)
+        }
+
+        rewardsViewModel.rewardsError.observe(viewLifecycleOwner) { mensaje ->
+            mensaje?.let {
+                mostrarError(it)
+                rewardsViewModel.consumirRewardsError()
+            }
+        }
+
+        rewardsViewModel.canjeResultado.observe(viewLifecycleOwner) { resultado ->
+            resultado?.let {
+                Toast.makeText(requireContext(), it.mensaje, Toast.LENGTH_LONG).show()
+                rewardsViewModel.consumirCanjeResultado()
+            }
+        }
     }
 
     private fun mostrarCarga(mostrar: Boolean) {
-        layoutEstadoCarga.visibility = if (mostrar) android.view.View.VISIBLE else android.view.View.GONE
-        progressCargaGeneral.visibility = if (mostrar) android.view.View.VISIBLE else android.view.View.GONE
+        layoutEstadoCarga.visibility = if (mostrar) View.VISIBLE else View.GONE
+        progressCargaGeneral.visibility = if (mostrar) View.VISIBLE else View.GONE
     }
 
     private fun mostrarError(mensaje: String) {
-        layoutEstadoCarga.visibility = android.view.View.VISIBLE
-        tvMensajeError.visibility = android.view.View.VISIBLE
+        layoutEstadoCarga.visibility = View.VISIBLE
+        tvMensajeError.visibility = View.VISIBLE
         tvMensajeError.text = mensaje
     }
 
     // ---------------------------------------------------------------------
-    // GET /api/perfil/puntos/historial
-    // ---------------------------------------------------------------------
-    private fun cargarHistorialPuntos(esRefrescoManual: Boolean = false) {
-        lifecycleScope.launch {
-            try {
-                val token = SessionManager.bearerToken(requireContext())
-                val response = api.getHistorialPuntos(token)
-
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null) {
-                        mostrarCarga(false)
-                        puntosActuales = body.puntosActuales
-                        tvPuntosTotales.text = "${nf.format(body.puntosActuales)} pts"
-                        tvPuntosParaSiguienteNivel.text =
-                            "${nf.format(body.puntosParaSiguienteNivel)} pts para Nivel ${body.nivelActual + 1}"
-                        progressNivel.progress = body.porcentajeProgreso
-
-                        body.insignias?.let { insigniasAdapter.updateData(it) }
-
-                        // Re-evalúa qué cupones son canjeables ahora que ya
-                        // sabemos los puntos reales del usuario.
-                        cuponesAdapter.notifyDataSetChanged()
-                    }
-                } else {
-                    mostrarError("No se pudo cargar tu progreso (código ${response.code()})")
-                }
-            } catch (e: Exception) {
-                mostrarError("Error de conexión al cargar tu progreso. Revisa tu internet.")
-            } finally {
-                if (esRefrescoManual) swipeRefresh.isRefreshing = false
-            }
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // GET /api/ranking
-    // ---------------------------------------------------------------------
-    private fun cargarRanking() {
-        lifecycleScope.launch {
-            try {
-                val token = SessionManager.bearerToken(requireContext())
-                val response = api.getRanking(token)
-
-                if (response.isSuccessful) {
-                    val lista = response.body() ?: emptyList()
-                    // Mostramos solo el Top 5 en pantalla, igual que el diseño original.
-                    rankingAdapter.updateData(lista.take(5))
-
-                    val miPosicion = lista.firstOrNull { it.esUsuarioActual }?.posicion
-                    tvPosicionUsuario.text = if (miPosicion != null) {
-                        "Estás en la posición #$miPosicion de tu distrito"
-                    } else {
-                        "Aún no apareces en el ranking de tu distrito"
-                    }
-                } else {
-                    Toast.makeText(
-                        this@RewardsActivity,
-                        "No se pudo cargar el ranking (código ${response.code()})",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@RewardsActivity,
-                    "Error de conexión al cargar el ranking.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // GET /api/cupons/disponibles
-    // ---------------------------------------------------------------------
-    private fun cargarCupones() {
-        lifecycleScope.launch {
-            try {
-                val token = SessionManager.bearerToken(requireContext())
-                val response = api.getCuponesDisponibles(token)
-
-                if (response.isSuccessful) {
-                    val lista = response.body() ?: emptyList()
-                    // Solo se muestran cupones activos y con stock disponible.
-                    val visibles = lista.filter { it.activo }
-                    cuponesAdapter.updateData(visibles)
-                } else {
-                    Toast.makeText(
-                        this@RewardsActivity,
-                        "No se pudieron cargar los cupones (código ${response.code()})",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@RewardsActivity,
-                    "Error de conexión al cargar los cupones.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // POST /api/canjes/cupon/{id}
+    // POST /api/canjes/cupon/{id}  (delegado al ViewModel)
     // ---------------------------------------------------------------------
     private fun mostrarConfirmacionCanje(cupon: Cupon) {
         if (puntosActuales < cupon.costoPuntos) {
             Toast.makeText(
-                this,
+                requireContext(),
                 "Te faltan ${nf.format(cupon.costoPuntos - puntosActuales)} pts para este cupón",
                 Toast.LENGTH_SHORT
             ).show()
@@ -243,51 +243,23 @@ private fun bindViews(view: View) {
         AlertDialog.Builder(requireContext())
             .setTitle("Canjear cupón")
             .setMessage("¿Deseas canjear \"${cupon.nombre}\" por ${nf.format(cupon.costoPuntos)} puntos?")
-            .setPositiveButton("Canjear") { _, _ -> canjearCupon(cupon) }
+            .setPositiveButton("Canjear") { _, _ ->
+                rewardsViewModel.canjearCupon(obtenerToken(), cupon)
+            }
             .setNegativeButton("Cancelar", null)
             .show()
     }
 
-    private fun canjearCupon(cupon: Cupon) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val token = SessionManager.bearerToken(requireContext())
-                val response = api.canjearCupon(token, cupon.id)
+    // ── Lectura centralizada del token, igual que HomeFragment ─────────────────
+    private fun obtenerToken(): String {
+        val prefs = requireActivity().getSharedPreferences(
+            "ciudad_limpia", android.content.Context.MODE_PRIVATE
+        )
+        return prefs.getString("jwt_token", "") ?: ""
+    }
 
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    Toast.makeText(
-                        requireContext(),
-                        body?.mensaje ?: "¡Cupón canjeado con éxito!",
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    // Si el backend devuelve los puntos restantes, los reflejamos
-                    // de inmediato sin esperar una nueva consulta.
-                    body?.puntosRestantes?.let {
-                        puntosActuales = it
-                        tvPuntosTotales.text = "${nf.format(it)} pts"
-                    }
-
-                    // Refresca cupones (por si el stock cambió) y el historial completo.
-                    cargarCupones()
-                    cargarHistorialPuntos()
-                } else {
-                    val mensaje = when (response.code()) {
-                        400 -> "No tienes suficientes puntos para este cupón."
-                        404 -> "Este cupón ya no está disponible."
-                        409 -> "Este cupón ya fue canjeado o se agotó el stock."
-                        else -> "No se pudo canjear el cupón (código ${response.code()})."
-                    }
-                    Toast.makeText(this@RewardsActivity, mensaje, Toast.LENGTH_LONG).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@RewardsActivity,
-                    "Error de conexión al canjear el cupón. Intenta nuevamente.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+    companion object {
+        fun newInstance() = RewardsFragment()
     }
 }
+

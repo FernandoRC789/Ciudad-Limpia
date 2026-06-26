@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="12dp"
+    android:gravity="center_vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvRankingPosicion"
+        android:layout_width="22dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="14sp"
+        android:textColor="#9CA3AF"
+        android:gravity="center" />
+
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp">
+
+        <View
+            android:id="@+id/viewAvatarBg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_avatar_placeholder" />
+
+        <ImageView
+            android:id="@+id/imgRankingAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/tvRankingIniciales"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="JP"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#3B5BDB" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRankingNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alejandro M."
+            android:textSize="14.5sp"
+            android:textStyle="bold"
+            android:textColor="#1A1F2B" />
+
+        <TextView
+            android:id="@+id/tvRankingTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ESTRATEGA URBANO"
+            android:textSize="11sp"
+            android:textColor="#9CA3AF"
+            android:letterSpacing="0.02" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRankingPuntos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="28,450 pts"
+        android:textSize="14.5sp"
+        android:textStyle="bold"
+        android:textColor="#1D4ED8" />
+
+</LinearLayout>

@@ -26,7 +26,7 @@
             android:text="@string/section_recent_reports"
             android:textAppearance="@style/TextAppearance.CivicHero.SectionTitle" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tvSeeAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:text="@string/action_see_all"
             android:textAppearance="@style/TextAppearance.CivicHero.Link" />
-
+-->
     </LinearLayout>
 
     <!--
