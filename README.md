@@ -235,6 +235,10 @@ const val BASE_URL = "http://10.0.2.2:8080/"
 
 Sincronizar Gradle y ejecutar la aplicación desde Android Studio.
 
+## 6. Mejor aún instalar el apk(usuario)
+
+Instalar el archivo app-debug-androidTest.apk en su telefono para empezar a usar la app y contribuir con nuestra ciudad.
+
 ---
 
 # 📸 Capturas de Pantalla
@@ -258,7 +262,7 @@ A continuación se muestran algunas de las principales pantallas de la aplicaci�
 
 # 👨‍💻 Autores
 
-## Nick Rodriguez Diego Cabrera Victor Carhuamaca
+## Nick Rodriguez, Diego Cabrera, Victor Carhuamaca
 
 Estudiantes de **Computación e Informática** en **Cibertec**.
 
